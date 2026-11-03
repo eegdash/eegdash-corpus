@@ -1,0 +1,489 @@
+% Citations for EEGDash/eegdash-corpus-v0.
+% Cite the corpus (first entry) and every dataset whose buckets you use: each entry below is keyed by its dataset id
+% (ds... = OpenNeuro, nm... = NEMAR), as in LICENSES.csv and in each bucket's `dataset` attribute. Where the dataset has
+% a paper, the entry is that paper and its `note` gives the data deposit; otherwise the entry is the deposit itself.
+
+% The corpus. Pages and DOI are added once the proceedings are published.
+@inproceedings{eegdash_corpus_v0,
+  title     = {{EEGDash Corpus}: A Training-Ready Public Corpus for {EEG} Foundation Models},
+  author    = {Shahi, Kuber and Aristimunha, Bruno and Delorme, Arnaud},
+  booktitle = {7th International Workshop on Machine Learning for EEG Signal Processing (MLESP 2026), with IEEE BIBM 2026},
+  year      = {2026},
+  note      = {Dataset: \url{https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0}}
+}
+
+% The model whose preprocessing recipe the corpus follows.
+@article{reve,
+  title   = {{REVE}: A Foundation Model for {EEG} -- Adapting to Any Setup with Large-Scale Pretraining on 25,000 Subjects},
+  author  = {El Ouahidi, Yassine and Lys, Jonathan and Th{\"o}lke, Philipp and Farrugia, Nicolas and Pasdeloup, Bastien and Gripon, Vincent and Jerbi, Karim and Lioi, Giulia},
+  journal = {arXiv preprint arXiv:2510.21585},
+  year    = {2025}
+}
+
+% ---------------------------------------------------------------------------------------------------- the 77 datasets
+
+% ds001787 Meditation: reused entry Brandmeyer2013
+@article{ds001787, title={Meditation and neurofeedback}, volume={4}, ISSN={1664-1078}, url={http://dx.doi.org/10.3389/fpsyg.2013.00688}, DOI={10.3389/fpsyg.2013.00688}, journal={Frontiers in Psychology}, publisher={Frontiers Media SA}, author={Brandmeyer, Tracy and Delorme, Arnaud}, year={2013},
+  note = {Data: https://doi.org/10.18112/openneuro.ds001787.v1.1.1 (CC0 1.0; EEGDash id on001787)}
+}
+
+% ds002680 Go/no-go: reused entry Delorme2004
+@article{ds002680, title={Interaction of top-down and bottom-up processing in the fast visual analysis of natural scenes}, volume={19}, ISSN={0926-6410}, url={http://dx.doi.org/10.1016/j.cogbrainres.2003.11.010}, DOI={10.1016/j.cogbrainres.2003.11.010}, number={2}, journal={Cognitive Brain Research}, publisher={Elsevier BV}, author={Delorme, Arnaud and Rousselet, Guillaume A and Mac{\'e}, Marc J.-M and Fabre-Thorpe, Mich{\`e}le}, year={2004}, month={Apr}, pages={103–113},
+  note = {Data: https://doi.org/10.18112/openneuro.ds002680.v1.2.0 (CC0 1.0; EEGDash id on002680)}
+}
+
+% ds002721 Affective music: reused entry Daly2014
+@article{ds002721, title={Neural correlates of emotional responses to music: An EEG study}, volume={573}, ISSN={0304-3940}, url={http://dx.doi.org/10.1016/j.neulet.2014.05.003}, DOI={10.1016/j.neulet.2014.05.003}, journal={Neuroscience Letters}, publisher={Elsevier BV}, author={Daly, Ian and Malik, Asad and Hwang, Faustina and Roesch, Etienne and Weaver, James and Kirke, Alexis and Williams, Duncan and Miranda, Eduardo and Nasuto, Slawomir J.}, year={2014}, month={June}, pages={52–57},
+  note = {Data: https://doi.org/10.18112/openneuro.ds002721.v1.0.2 (CC0 1.0; EEGDash id on002721)}
+}
+
+% ds002778 Parkinson rest: reused entry Jackson2019
+@article{ds002778, title={Characteristics of Waveform Shape in Parkinson's Disease Detected with Scalp Electroencephalography}, volume={6}, ISSN={2373-2822}, url={http://dx.doi.org/10.1523/eneuro.0151-19.2019}, DOI={10.1523/eneuro.0151-19.2019}, number={3}, journal={eneuro}, publisher={Society for Neuroscience}, author={Jackson, Nicko and Cole, Scott R. and Voytek, Bradley and Swann, Nicole C.}, year={2019}, month={May}, pages={ENEURO.0151–19.2019},
+  note = {Data: https://doi.org/10.18112/openneuro.ds002778.v1.0.5 (CC0 1.0; EEGDash id on002778)}
+}
+
+% ds003004 Imagined emotion: reused entry Onton2009
+@article{ds003004, title={High-frequency broadband modulation of electroencephalographic spectra}, volume={3}, ISSN={1662-5161}, url={http://dx.doi.org/10.3389/neuro.09.061.2009}, DOI={10.3389/neuro.09.061.2009}, journal={Frontiers in Human Neuroscience}, publisher={Frontiers Media SA}, author={Onton, Julie}, year={2009},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003004.v1.1.1 (CC0 1.0; EEGDash id on003004)}
+}
+
+% ds003690 Rest & auditory: reused entry Ribeiro2019
+@article{ds003690, title={Age-related differences in event-related potentials and pupillary responses in cued reaction time tasks}, volume={73}, ISSN={0197-4580}, url={http://dx.doi.org/10.1016/j.neurobiolaging.2018.09.028}, DOI={10.1016/j.neurobiolaging.2018.09.028}, journal={Neurobiology of Aging}, publisher={Elsevier BV}, author={Ribeiro, Maria J. and Castelo-Branco, Miguel}, year={2019}, month={Jan}, pages={177–189},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003690.v1.0.0 (CC0 1.0; EEGDash id on003690)}
+}
+
+% ds003775 SRM rest: reused entry Hatlestadhall2022
+@article{ds003775, title={BIDS-structured resting-state electroencephalography (EEG) data extracted from an experimental paradigm}, volume={45}, ISSN={2352-3409}, url={http://dx.doi.org/10.1016/j.dib.2022.108647}, DOI={10.1016/j.dib.2022.108647}, journal={Data in Brief}, publisher={Elsevier BV}, author={Hatlestad-Hall, Christoffer and Rygvold, Trine Waage and Andersson, Stein}, year={2022}, month={Dec}, pages={108647},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003775.v1.2.1 (CC0 1.0; EEGDash id on003775)}
+}
+
+% ds003825 THINGS-EEG1: reused entry Grootswagers2022
+@article{ds003825, title={Human EEG recordings for 1,854 concepts presented in rapid serial visual presentation streams}, volume={9}, ISSN={2052-4463}, url={http://dx.doi.org/10.1038/s41597-021-01102-7}, DOI={10.1038/s41597-021-01102-7}, number={1}, journal={Scientific Data}, publisher={Springer Science and Business Media LLC}, author={Grootswagers, Tijl and Zhou, Ivy and Robinson, Amanda K. and Hebart, Martin N. and Carlson, Thomas A.}, year={2022}, month={Jan},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003825.v1.1.0 (CC0 1.0; EEGDash id on003825)}
+}
+
+% ds003846 Prediction error: reused entry Gehrke2019
+@inproceedings{ds003846, series={CHI '19}, title={Detecting Visuo-Haptic Mismatches in Virtual Reality using the Prediction Error Negativity of Event-Related Brain Potentials}, url={http://dx.doi.org/10.1145/3290605.3300657}, DOI={10.1145/3290605.3300657}, booktitle={Proceedings of the 2019 CHI Conference on Human Factors in Computing Systems}, publisher={ACM}, author={Gehrke, Lukas and Akman, Sezen and Lopes, Pedro and Chen, Albert and Singh, Avinash Kumar and Chen, Hsiang-Ting and Lin, Chin-Teng and Gramann, Klaus}, year={2019}, month={May}, pages={1–11}, collection={CHI '19},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003846.v2.0.2 (CC0 1.0; EEGDash id on003846)}
+}
+
+% ds003885 Object motion 1: reused entry Shatek2021
+@article{ds003885, journal={Center for Open Science}, title={Capacity for movement is an organisational principle in object representations}, url={http://dx.doi.org/10.31234/osf.io/3x2qh}, DOI={10.31234/osf.io/3x2qh}, publisher={Center for Open Science}, author={Shatek, Sophia M. and Robinson, Amanda K and Grootswagers, Tijl and Carlson, Thomas A.}, year={2021}, month={Nov},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003885.v1.0.7 (CC0 1.0; EEGDash id on003885)}
+}
+
+% ds003887 Object motion 2: reused entry Shatek2021
+@article{ds003887, journal={Center for Open Science}, title={Capacity for movement is an organisational principle in object representations}, url={http://dx.doi.org/10.31234/osf.io/3x2qh}, DOI={10.31234/osf.io/3x2qh}, publisher={Center for Open Science}, author={Shatek, Sophia M. and Robinson, Amanda K and Grootswagers, Tijl and Carlson, Thomas A.}, year={2021}, month={Nov},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003887.v1.2.2 (CC0 1.0; EEGDash id on003887)}
+}
+
+% ds003969 Meditation vs think: reused entry Braboszcz2017
+@article{ds003969, title={Increased Gamma Brainwave Amplitude Compared to Control in Three Different Meditation Traditions}, volume={12}, ISSN={1932-6203}, url={http://dx.doi.org/10.1371/journal.pone.0170647}, DOI={10.1371/journal.pone.0170647}, number={1}, journal={PLOS ONE}, publisher={Public Library of Science (PLoS)}, author={Braboszcz, Claire and Cahn, B. Rael and Levy, Jonathan and Fernandez, Manuel and Delorme, Arnaud}, editor={Najbauer, Joseph}, year={2017}, month={Jan}, pages={e0170647},
+  note = {Data: https://doi.org/10.18112/openneuro.ds003969.v1.0.0 (CC0 1.0; EEGDash id on003969)}
+}
+
+% ds004043 Feature attention: reused entry Moerel2021
+@article{ds004043, journal={openRxiv}, title={Undivided attention: The temporal effects of attention dissociated from decision, memory, and expectation}, url={http://dx.doi.org/10.1101/2021.05.24.445376}, DOI={10.1101/2021.05.24.445376}, publisher={openRxiv}, author={Moerel, Denise and Grootswagers, Tijl and Robinson, Amanda K. and Shatek, Sophia M. and Woolgar, Alexandra and Carlson, Thomas A. and Rich, Anina N.}, year={2021}, month={May},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004043.v1.1.0 (CC0 1.0; EEGDash id on004043)}
+}
+
+% ds004147 Task value: reused entry Hassall2021
+@article{ds004147, journal={openRxiv}, title={Task-Level Value Affects Trial-Level Reward Processing}, url={http://dx.doi.org/10.1101/2021.09.16.460600}, DOI={10.1101/2021.09.16.460600}, publisher={openRxiv}, author={Hassall, Cameron D. and Hunt, Laurence T. and Holroyd, Clay B.}, year={2021}, month={Sept},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004147.v1.0.2 (CC0 1.0; EEGDash id on004147)}
+}
+
+% ds004148 Test-retest rest: reused entry Wang2022
+@article{ds004148, title={A test-retest resting, and cognitive state EEG dataset during multiple subject-driven states}, volume={9}, ISSN={2052-4463}, url={http://dx.doi.org/10.1038/s41597-022-01607-9}, DOI={10.1038/s41597-022-01607-9}, number={1}, journal={Scientific Data}, publisher={Springer Science and Business Media LLC}, author={Wang, Yulin and Duan, Wei and Dong, Debo and Ding, Lihong and Lei, Xu}, year={2022}, month={Sept},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004148.v1.0.0 (CC0 1.0; EEGDash id on004148)}
+}
+
+% ds004152 Drum trainer: no paper found; the data deposit
+@misc{ds004152,
+  author = {Cameron D. Hassall and Yan Yan and Laurence T. Hunt},
+  title = {{Drum Trainer}},
+  howpublished = {OpenNeuro, dataset on004152},
+  doi = {10.18112/openneuro.ds004152.v1.1.2},
+  url = {https://openneuro.org/datasets/ds004152},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% ds004262 Feedback: reused entry Hassall2023
+@article{ds004262, title={The neural correlates of continuous feedback processing}, volume={60}, ISSN={1469-8986}, url={http://dx.doi.org/10.1111/psyp.14399}, DOI={10.1111/psyp.14399}, number={12}, journal={Psychophysiology}, publisher={Wiley}, author={Hassall, Cameron D. and Yan, Yan and Hunt, Laurence T.}, year={2023}, month={July},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004262.v1.0.0 (CC0 1.0; EEGDash id on004262)}
+}
+
+% ds004264 Steer the ship: no paper found; the data deposit
+@misc{ds004264,
+  author = {Cameron D. Hassall and Yan Yan and Laurence T. Hunt},
+  title = {{Steer the Ship}},
+  howpublished = {OpenNeuro, dataset on004264},
+  doi = {10.18112/openneuro.ds004264.v1.1.0},
+  url = {https://openneuro.org/datasets/ds004264},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% ds004279 Spanish sentences: reused entry Valle2024
+@article{ds004279, title={Identification of perceived sentences using deep neural networks in EEG}, volume={21}, ISSN={1741-2552}, url={http://dx.doi.org/10.1088/1741-2552/ad88a3}, DOI={10.1088/1741-2552/ad88a3}, number={5}, journal={Journal of Neural Engineering}, publisher={IOP Publishing}, author={Valle, Carlos and Mendez-Orellana, Carolina and Herff, Christian and Rodriguez-Fernandez, Maria}, year={2024}, month={Oct}, pages={056044},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004279.v1.1.2 (CC0 1.0; EEGDash id on004279)}
+}
+
+% ds004284 Neuroforecasting: reused entry Veillette2023
+@article{ds004284, title={Single-trial visually evoked potentials predict both individual choice and market outcomes}, volume={13}, ISSN={2045-2322}, url={http://dx.doi.org/10.1038/s41598-023-41613-4}, DOI={10.1038/s41598-023-41613-4}, number={1}, journal={Scientific Reports}, publisher={Springer Science and Business Media LLC}, author={Veillette, John P. and Heald, Shannon L. M. and Wittenbrink, Benjamin and Reis, Katherine S. and Nusbaum, Howard C.}, year={2023}, month={Sept},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004284.v1.0.0 (CC0 1.0; EEGDash id ds004284)}
+}
+
+% ds004315 Mood induction: no paper found; the data deposit
+@misc{ds004315,
+  author = {James F Cavanagh and Trevor C J Jackson},
+  title = {{Mood Manipulation and PST, Experiment 1}},
+  howpublished = {OpenNeuro, dataset on004315},
+  doi = {10.18112/openneuro.ds004315.v1.0.0},
+  url = {https://openneuro.org/datasets/ds004315},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% ds004324 Toon faces: reused entry Chacon2022
+@article{ds004324, journal={Research Square Platform LLC}, title={Images of stylized faces enhance ERP features used for emotion detection}, url={http://dx.doi.org/10.21203/rs.3.rs-1886096/v1}, DOI={10.21203/rs.3.rs-1886096/v1}, publisher={Research Square Platform LLC}, author={Chac{\'o}n, Luis Alberto Barradas and Brunner, Clemens and Wriessnegger, Selina C.}, year={2022}, month={Aug},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004324.v1.0.0 (CC0 1.0; EEGDash id on004324)}
+}
+
+% ds004356 Music vs speech: reused entry Shan2024
+@article{ds004356, title={Subcortical responses to music and speech are alike while cortical responses diverge}, volume={14}, ISSN={2045-2322}, url={http://dx.doi.org/10.1038/s41598-023-50438-0}, DOI={10.1038/s41598-023-50438-0}, number={1}, journal={Scientific Reports}, publisher={Springer Science and Business Media LLC}, author={Shan, Tong and Cappelloni, Madeline S. and Maddox, Ross K.}, year={2024}, month={Jan},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004356.v2.2.1 (CC0 1.0; EEGDash id on004356)}
+}
+
+% ds004357 Features-EEG: reused entry Grootswagers2024
+@article{ds004357, title={Mapping the dynamics of visual feature coding: Insights into perception and integration}, volume={20}, ISSN={1553-7358}, url={http://dx.doi.org/10.1371/journal.pcbi.1011760}, DOI={10.1371/journal.pcbi.1011760}, number={1}, journal={PLOS Computational Biology}, publisher={Public Library of Science (PLoS)}, author={Grootswagers, Tijl and Robinson, Amanda K. and Shatek, Sophia M. and Carlson, Thomas A.}, editor={Marinazzo, Daniele}, year={2024}, month={Jan}, pages={e1011760},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004357.v1.0.1 (CC0 1.0; EEGDash id on004357)}
+}
+
+% ds004395 PEERS: reused entry Kahana2024
+@article{ds004395, title={The Penn Electrophysiology of Encoding and Retrieval Study.}, volume={50}, ISSN={0278-7393}, url={http://dx.doi.org/10.1037/xlm0001319}, DOI={10.1037/xlm0001319}, number={9}, journal={Journal of Experimental Psychology: Learning, Memory, and Cognition}, publisher={American Psychological Association (APA)}, author={Kahana, Michael J. and Lohnas, Lynn J. and Healey, M. Karl and Aka, Ada and Broitman, Adam W. and Crutchley, Patrick and Crutchley, Elizabeth and Alm, Kylie H. and Katerman, Brandon S. and Miller, Nicole E. and Kuhn, Joel R. and Li, Yuxuan and Long, Nicole M. and Miller, Jonathan and Paron, Madison D. and Pazdera, Jesse K. and Pedisich, Isaac and Rudoler, Joseph H. and Weidemann, Christoph T.}, year={2024}, month={Sept}, pages={1421–1443},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004395.v2.0.0 (CC0 1.0; EEGDash id on004395)}
+}
+
+% ds004408 Natural speech: no paper found; the data deposit
+@misc{ds004408,
+  author = {Giovanni M Di Liberto and Michael P Broderick and Ole Bialas and Edmund C Lalor},
+  title = {{EEG responses to continuous naturalistic speech}},
+  howpublished = {OpenNeuro, dataset on004408},
+  doi = {10.18112/openneuro.ds004408.v1.0.8},
+  url = {https://openneuro.org/datasets/ds004408},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% ds004477 Pandemic scenario: no paper found; the data deposit
+@misc{ds004477,
+  author = {Tasos Papastylianou and Rodrigo Ramele and Luca Citi and Caterina Cinel and Riccardo Poli},
+  title = {{PES - Pandemic Emergency Scenario}},
+  howpublished = {OpenNeuro, dataset on004477},
+  doi = {10.18112/openneuro.ds004477.v1.0.2},
+  url = {https://openneuro.org/datasets/ds004477},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% ds004561 Agency illusion: reused entry Veillette2023a
+@article{ds004561, journal={openRxiv}, title={Temporal Dynamics of Brain Activity Predicting Sense of Agency over Muscle Movements}, url={http://dx.doi.org/10.1101/2023.05.06.539706}, DOI={10.1101/2023.05.06.539706}, publisher={openRxiv}, author={Veillette, John P. and Lopes, Pedro and Nusbaum, Howard C.}, year={2023}, month={May},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004561.v1.0.0 (CC0 1.0; EEGDash id on004561)}
+}
+
+% ds004572 Hypnosis: reused entry Kekecs2025
+@article{ds004572, title={Can Any Procedure Be Hypnosis? Exploring the Effect of Framing on Hypnotic Depth and Electrophysiological Correlates of Hypnosis in a Balanced Placebo Design}, volume={62}, ISSN={1469-8986}, url={http://dx.doi.org/10.1111/psyp.70183}, DOI={10.1111/psyp.70183}, number={11}, journal={Psychophysiology}, publisher={Wiley}, author={Kekecs, Zoltan and Csikos, Endre and Minh, Nguyen Dang Quy and Farahzadi, Yeganeh and Simor, Peter and Nyiri, Balazs and Rizzo, Pietro and Olson, Jay A. and Elkins, Gary}, year={2025}, month={Nov},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004572.v1.3.2 (CC0 1.0; EEGDash id on004572)}
+}
+
+% ds004582 Fake faces: no paper found; the data deposit
+@misc{ds004582,
+  author = {Dominique Makowski and An-Shu Te and Stephanie Kirk and Zi Liang Ngoi},
+  title = {{FakeFaceEmo\_data}},
+  howpublished = {OpenNeuro, dataset ds004582},
+  doi = {10.18112/openneuro.ds004582.v1.0.0},
+  url = {https://openneuro.org/datasets/ds004582},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% ds004603 Context trajectory: reused entry Lowe2023
+@article{ds004603, title={Same but different: The latency of a shared expectation signal interacts with stimulus attributes}, volume={168}, ISSN={0010-9452}, url={http://dx.doi.org/10.1016/j.cortex.2023.08.004}, DOI={10.1016/j.cortex.2023.08.004}, journal={Cortex}, publisher={Elsevier BV}, author={Lowe, Benjamin G. and Robinson, Jonathan E. and Yamamoto, Naohide and Hogendoorn, Hinze and Johnston, Patrick}, year={2023}, month={Nov}, pages={143–156},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004603.v1.1.0 (CC0 1.0; EEGDash id on004603)}
+}
+
+% ds004706 Spatial memory: reused entry Dougherty2022
+@article{ds004706, journal={openRxiv}, title={Neural correlates of memory in a naturalistic spatiotemporal context}, url={http://dx.doi.org/10.1101/2022.11.30.518606}, DOI={10.1101/2022.11.30.518606}, publisher={openRxiv}, author={Dougherty, Matthew R. and Chang, Woohyeuk and Rudoler, Joseph H. and Katerman, Brandon S. and Halpern, David J. and Bruska, James P. and Diamond, Nicholas B. and Kahana, Michael J.}, year={2022}, month={Dec},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004706.v1.0.0 (CC0 1.0; EEGDash id on004706)}
+}
+
+% ds004816 RSVP attention 1: reused entry Grootswagers2021a
+@article{ds004816, title={The neural dynamics underlying prioritisation of task-relevant information}, volume={5}, ISSN={2690-2664}, url={http://dx.doi.org/10.51628/001c.21174}, DOI={10.51628/001c.21174}, number={1}, journal={Neurons, Behavior, Data analysis, and Theory}, publisher={The Neurons Behavior Data Analysis and Theory collective}, author={Grootswagers, Tijl and Robinson, Amanda K and Shatek, Sophia M and Carlson, Thomas A}, year={2021}, month={Feb},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004816.v1.0.0 (CC0 1.0; EEGDash id on004816)}
+}
+
+% ds004817 RSVP attention 2: reused entry Grootswagers2021a
+@article{ds004817, title={The neural dynamics underlying prioritisation of task-relevant information}, volume={5}, ISSN={2690-2664}, url={http://dx.doi.org/10.51628/001c.21174}, DOI={10.51628/001c.21174}, number={1}, journal={Neurons, Behavior, Data analysis, and Theory}, publisher={The Neurons Behavior Data Analysis and Theory collective}, author={Grootswagers, Tijl and Robinson, Amanda K and Shatek, Sophia M and Carlson, Thomas A}, year={2021}, month={Feb},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004817.v1.0.0 (CC0 1.0; EEGDash id on004817)}
+}
+
+% ds004840 Music therapy: reused entry Cordobasilva2024
+@article{ds004840, title={Music therapy with adult burn patients in the intensive care unit: short-term analysis of electrophysiological signals during music-assisted relaxation}, volume={14}, ISSN={2045-2322}, url={http://dx.doi.org/10.1038/s41598-024-73211-3}, DOI={10.1038/s41598-024-73211-3}, number={1}, journal={Scientific Reports}, publisher={Springer Science and Business Media LLC}, author={Cordoba-Silva, Jose and Maya, Rafael and Valderrama, Mario and Giraldo, Luis Felipe and Betancourt-Zapata, William and Salgado-Vasco, Andr{\'e}s and Mar{\'i}n-S{\'a}nchez, Juliana and G{\'o}mez-Ortega, Viviana and Ettenberger, Mark}, year={2024}, month={Oct},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004840.v1.0.1 (CC0 1.0; EEGDash id on004840)}
+}
+
+% ds004902 Sleep deprivation: reused entry Xiang2024
+@article{ds004902, title={A resting-state EEG dataset for sleep deprivation}, volume={11}, ISSN={2052-4463}, url={http://dx.doi.org/10.1038/s41597-024-03268-2}, DOI={10.1038/s41597-024-03268-2}, number={1}, journal={Scientific Data}, publisher={Springer Science and Business Media LLC}, author={Xiang, Chuqin and Fan, Xinrui and Bai, Duo and Lv, Ke and Lei, Xu}, year={2024}, month={Apr},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004902.v1.0.8 (CC0 1.0; EEGDash id on004902)}
+}
+
+% ds004951 Braille letters: reused entry Haupt2024
+@article{ds004951, title={The transformation of sensory to perceptual braille letter representations in the visually deprived brain}, volume={13}, ISSN={2050-084X}, url={http://dx.doi.org/10.7554/elife.98148}, DOI={10.7554/elife.98148}, journal={eLife}, publisher={eLife Sciences Publications, Ltd}, author={Haupt, Marleen and Graumann, Monika and Teng, Santani and Kaltenbach, Carina and Cichy, Radoslaw}, year={2024}, month={Dec},
+  note = {Data: https://doi.org/10.18112/openneuro.ds004951.v1.0.0 (CC0 1.0; EEGDash id on004951)}
+}
+
+% ds005089 Selective attention: reused entry Aguadolopez2024
+@article{ds005089, title={Proactive selective attention across competition contexts}, volume={176}, ISSN={0010-9452}, url={http://dx.doi.org/10.1016/j.cortex.2024.04.009}, DOI={10.1016/j.cortex.2024.04.009}, journal={Cortex}, publisher={Elsevier BV}, author={Aguado-L{\'o}pez, Blanca and Palenciano, Ana F. and Pe{\~n}alver, Jos{\'e} M.G. and D{\'i}az-Guti{\'e}rrez, Paloma and L{\'o}pez-Garc{\'i}a, David and Avancini, Chiara and Ciria, Luis F. and Ruz, Mar{\'i}a}, year={2024}, month={July}, pages={113–128},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005089.v1.0.1 (CC0 1.0; EEGDash id on005089)}
+}
+
+% ds005095 Sternberg: reused entry Zhozhikashvili2024
+@article{ds005095, title={Working memory processes and intrinsic motivation: An EEG study}, volume={201}, ISSN={0167-8760}, url={http://dx.doi.org/10.1016/j.ijpsycho.2024.112355}, DOI={10.1016/j.ijpsycho.2024.112355}, journal={International Journal of Psychophysiology}, publisher={Elsevier BV}, author={Zhozhikashvili, Natalia and Protopova, Maria and Shkurenko, Tatiana and Arsalidou, Marie and Zakharov, Ilya and Kotchoubey, Boris and Malykh, Sergey and Pavlov, Yuri G.}, year={2024}, month={July}, pages={112355},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005095.v1.0.2 (CC0 1.0; EEGDash id on005095)}
+}
+
+% ds005121 Task not stated: reused entry Siefert2024
+@article{ds005121, title={Memory Reactivation during Sleep Does Not Act Holistically on Object Memory}, volume={44}, ISSN={1529-2401}, url={http://dx.doi.org/10.1523/jneurosci.0022-24.2024}, DOI={10.1523/jneurosci.0022-24.2024}, number={24}, journal={The Journal of Neuroscience}, publisher={Society for Neuroscience}, author={Siefert, Elizabeth M. and Uppuluri, Sindhuja and Mu, Jianing and Tandoc, Marlie C. and Antony, James W. and Schapiro, Anna C.}, year={2024}, month={Apr}, pages={e0022242024},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005121.v1.0.2 (CC0 1.0; EEGDash id on005121)}
+}
+
+% ds005189 Recollection: reused entry Helbing2025
+@article{ds005189, title={Incidental Encoding of Objects during Search Is Stronger Than Intentional Memorization due to Increased Recollection Rather Than Familiarity}, volume={37}, ISSN={1530-8898}, url={http://dx.doi.org/10.1162/jocn.a.80}, DOI={10.1162/jocn.a.80}, number={12}, journal={Journal of Cognitive Neuroscience}, publisher={MIT Press}, author={Helbing, Jason and Draschkow, Dejan and V{\~o}, Melissa L.-H.}, year={2025}, pages={2538–2557},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005189.v1.0.1 (CC0 1.0; EEGDash id on005189)}
+}
+
+% ds005262 Arabic inner speech: reused entry Metwalli2025
+@article{ds005262, title={ArEEG: an Open-Access Arabic Inner Speech EEG Dataset}, volume={12}, ISSN={2052-4463}, url={http://dx.doi.org/10.1038/s41597-025-05387-w}, DOI={10.1038/s41597-025-05387-w}, number={1}, journal={Scientific Data}, publisher={Springer Science and Business Media LLC}, author={Metwalli, Donia and Kiroles, Antony E. and Radwan, Yousef A. and Mohamed, Eslam Ahmed and Barakat, Mariam and Ahmed, Anas and Omar, Amr M. and Selim, Sahar}, year={2025}, month={Aug},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005262.v1.0.1 (CC0 1.0; EEGDash id on005262)}
+}
+
+% ds005273 Seen vs unseen: reused entry Rodriguezsanesteban2025
+@article{ds005273, title={Neural representation of consciously seen and unseen information}, volume={15}, ISSN={2045-2322}, url={http://dx.doi.org/10.1038/s41598-025-92490-y}, DOI={10.1038/s41598-025-92490-y}, number={1}, journal={Scientific Reports}, publisher={Springer Science and Business Media LLC}, author={Rodr{\'i}guez-San Esteban, Pablo and Gonzalez-Lopez, Jose A. and Chica, Ana B.}, year={2025}, month={Mar},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005273.v1.0.0 (CC0 1.0; EEGDash id on005273)}
+}
+
+% ds005505 HBN R1: reused entry Shirazi2024
+@article{ds005505, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005505 (CC BY-SA 4.0; EEGDash id on005505)}
+}
+
+% ds005506 HBN R2: reused entry Shirazi2024
+@article{ds005506, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005506 (CC BY-SA 4.0; EEGDash id on005506)}
+}
+
+% ds005507 HBN R3: reused entry Shirazi2024
+@article{ds005507, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005507 (CC BY-SA 4.0; EEGDash id on005507)}
+}
+
+% ds005508 HBN R4: reused entry Shirazi2024
+@article{ds005508, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005508 (CC BY-SA 4.0; EEGDash id on005508)}
+}
+
+% ds005509 HBN R5: reused entry Shirazi2024
+@article{ds005509, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005509 (CC BY-SA 4.0; EEGDash id on005509)}
+}
+
+% ds005510 HBN R6: reused entry Shirazi2024
+@article{ds005510, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005510 (CC BY-SA 4.0; EEGDash id on005510)}
+}
+
+% ds005511 HBN R7: reused entry Shirazi2024
+@article{ds005511, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005511 (CC BY-SA 4.0; EEGDash id on005511)}
+}
+
+% ds005512 HBN R8: reused entry Shirazi2024
+@article{ds005512, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005512 (CC BY-SA 4.0; EEGDash id on005512)}
+}
+
+% ds005514 HBN R9: reused entry Shirazi2024
+@article{ds005514, journal={openRxiv}, title={HBN-EEG: The FAIR implementation of the Healthy Brain Network (HBN) electroencephalography dataset}, url={http://dx.doi.org/10.1101/2024.10.03.615261}, DOI={10.1101/2024.10.03.615261}, publisher={openRxiv}, author={Shirazi, Seyed Yahya and Franco, Alexandre and Hoffmann, Maur{\'i}cio Scopel and Esper, Nathalia B. and Truong, Dung and Delorme, Arnaud and Milham, Michael P. and Makeig, Scott}, year={2024}, month={Oct},
+  note = {Data: https://openneuro.org/datasets/ds005514 (CC BY-SA 4.0; EEGDash id on005514)}
+}
+
+% ds005586 Numerosity: reused entry Baykan2025
+@article{ds005586, title={Electroencephalographic Responses to the Number of Objects in Partially Occluded and Uncovered Scenes}, volume={37}, ISSN={1530-8898}, url={http://dx.doi.org/10.1162/jocn_a_02264}, DOI={10.1162/jocn_a_02264}, number={1}, journal={Journal of Cognitive Neuroscience}, publisher={MIT Press}, author={Baykan, Cemre and Sch{\"u}tz, Alexander C.}, year={2025}, pages={227–238},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005586.v2.0.0 (CC0 1.0; EEGDash id on005586)}
+}
+
+% ds005594 Alphabetic decision: reused entry Taylor2024
+@article{ds005594, journal={openRxiv}, title={Beyond Letters: Optimal Transport as a Model for Sub-Letter Orthographic Processing}, url={http://dx.doi.org/10.1101/2024.11.11.622929}, DOI={10.1101/2024.11.11.622929}, publisher={openRxiv}, author={Taylor, Jack E. and Sinn, Rasmus and Iaia, Cosimo and Fiebach, Christian J.}, year={2024}, month={Nov},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005594.v1.0.3 (CC0 1.0; EEGDash id on005594)}
+}
+
+% ds005620 Anaesthesia: reused entry Bajwa2025
+@article{ds005620, title={A repeated awakening study exploring the capacity of complexity measures to capture dreaming during propofol sedation}, volume={15}, ISSN={2045-2322}, url={http://dx.doi.org/10.1038/s41598-025-12695-z}, DOI={10.1038/s41598-025-12695-z}, number={1}, journal={Scientific Reports}, publisher={Springer Science and Business Media LLC}, author={Bajwa, Imad J. and Nilsen, Andre S. and Skukies, Ren{\'e} and Aamodt, Arnfinn and Ernst, Gernot and Storm, Johan F. and Juel, Bj{\o}rn E.}, year={2025}, month={Sept},
+  note = {Data: https://doi.org/10.18112/openneuro.ds005620.v1.0.0 (CC0 1.0; EEGDash id on005620)}
+}
+
+% ds005697 Perceive/imagine: no paper found; the data deposit
+@misc{ds005697,
+  author = {Weilong Li and Hua Fan},
+  title = {{PerceiveImagine}},
+  howpublished = {OpenNeuro, dataset ds005697},
+  doi = {10.18112/openneuro.ds005697.v1.0.2},
+  url = {https://openneuro.org/datasets/ds005697},
+  note = {Licence: CC0 1.0; year and version as on the archive page}
+}
+
+% nm000123 Kalunga2016: reused entry Kalunga2016
+@article{nm000123, title={Online SSVEP-based BCI using Riemannian geometry}, volume={191}, ISSN={0925-2312}, url={http://dx.doi.org/10.1016/j.neucom.2016.01.007}, DOI={10.1016/j.neucom.2016.01.007}, journal={Neurocomputing}, publisher={Elsevier BV}, author={Kalunga, Emmanuel K. and Chevallier, Sylvain and Barth{\'e}lemy, Quentin and Djouani, Karim and Monacelli, Eric and Hamam, Yskandar}, year={2016}, month={May}, pages={55–68},
+  note = {Data: https://zenodo.org/record/2392979 (CC BY 4.0; EEGDash id nm000123)}
+}
+
+% nm000138 AlexMI: no paper found; the data deposit
+@misc{nm000138,
+  author = {Alexandre Barachant},
+  title = {{Alex Motor Imagery dataset}},
+  howpublished = {NEMAR, dataset nm000138},
+  doi = {10.5281/zenodo.806022},
+  url = {https://nemar.org/dataexplorer/detail?dataset_id=nm000138},
+  note = {Licence: CC BY-SA 4.0; year and version as on the archive page}
+}
+
+% nm000146 Weibo2014: reused entry Yi2014
+@article{nm000146, title={Evaluation of EEG Oscillatory Patterns and Cognitive Process during Simple and Compound Limb Motor Imagery}, volume={9}, ISSN={1932-6203}, url={http://dx.doi.org/10.1371/journal.pone.0114853}, DOI={10.1371/journal.pone.0114853}, number={12}, journal={PLoS ONE}, publisher={Public Library of Science (PLoS)}, author={Yi, Weibo and Qiu, Shuang and Wang, Kun and Qi, Hongzhi and Zhang, Lixin and Zhou, Peng and He, Feng and Ming, Dong}, editor={Maurits, Natasha M.}, year={2014}, month={Dec}, pages={e114853},
+  note = {Data: https://doi.org/10.7910/DVN/27306 (CC0 1.0; EEGDash id nm000146)}
+}
+
+% nm000158 Liu2024 (stroke): reused entry Liu2024
+@article{nm000158, title={An EEG motor imagery dataset for brain computer interface in acute stroke patients}, volume={11}, ISSN={2052-4463}, url={http://dx.doi.org/10.1038/s41597-023-02787-8}, DOI={10.1038/s41597-023-02787-8}, number={1}, journal={Scientific Data}, publisher={Springer Science and Business Media LLC}, author={Liu, Haijie and Wei, Penghu and Wang, Haochong and Lv, Xiaodong and Duan, Wei and Li, Meijie and Zhao, Yan and Wang, Qingmei and Chen, Xinyuan and Shi, Gaige and Han, Bo and Hao, Junwei}, year={2024}, month={Jan},
+  note = {Data: https://doi.org/10.6084/m9.figshare.21679035.v5 (CC BY 4.0; EEGDash id nm000158)}
+}
+
+% nm000172 Schirrmeister2017: reused entry Schirrmeister2017
+@article{nm000172, title={Deep learning with convolutional neural networks for EEG decoding and visualization}, volume={38}, ISSN={1097-0193}, url={http://dx.doi.org/10.1002/hbm.23730}, DOI={10.1002/hbm.23730}, number={11}, journal={Human Brain Mapping}, publisher={Wiley}, author={Schirrmeister, Robin Tibor and Springenberg, Jost Tobias and Fiederer, Lukas Dominique Josef and Glasstetter, Martin and Eggensperger, Katharina and Tangermann, Michael and Hutter, Frank and Burgard, Wolfram and Ball, Tonio}, year={2017}, month={Aug}, pages={5391–5420},
+  note = {Data: https://web.gin.g-node.org/robintibor/high-gamma-dataset/ (CC BY 4.0; EEGDash id nm000172)}
+}
+
+% nm000173 Ofner2017: reused entry Ofner2017
+@article{nm000173, title={Upper limb movements can be decoded from the time-domain of low-frequency EEG}, volume={12}, ISSN={1932-6203}, url={http://dx.doi.org/10.1371/journal.pone.0182578}, DOI={10.1371/journal.pone.0182578}, number={8}, journal={PLOS ONE}, publisher={Public Library of Science (PLoS)}, author={Ofner, Patrick and Schwarz, Andreas and Pereira, Joana and M{\"u}ller-Putz, Gernot R.}, editor={Zhang, Dingguo}, year={2017}, month={Aug}, pages={e0182578},
+  note = {Data: https://bnci-horizon-2020.eu/database/data-sets (CC BY 4.0; EEGDash id nm000173)}
+}
+
+% nm000181 NMT: reused entry Khan2022
+@article{nm000181, title={The NMT Scalp EEG Dataset: An Open-Source Annotated Dataset of Healthy and Pathological EEG Recordings for Predictive Modeling}, volume={15}, ISSN={1662-453X}, url={http://dx.doi.org/10.3389/fnins.2021.755817}, DOI={10.3389/fnins.2021.755817}, journal={Frontiers in Neuroscience}, publisher={Frontiers Media SA}, author={Khan, Hassan Aqeel and Ul Ain, Rahat and Kamboh, Awais Mehmood and Butt, Hammad Tanveer and Shafait, Saima and Alamgir, Wasim and Stricker, Didier and Shafait, Faisal}, year={2022}, month={Jan},
+  note = {Data: https://doi.org/10.5281/zenodo.10909103 (CC BY-SA 4.0; EEGDash id nm000181)}
+}
+
+% nm000215 BI2014b: reused entry Cattan2020
+@article{nm000215, title={Recommendations for Integrating a P300-Based Brain–Computer Interface in Virtual Reality Environments for Gaming: An Update}, volume={9}, ISSN={2073-431X}, url={http://dx.doi.org/10.3390/computers9040092}, DOI={10.3390/computers9040092}, number={4}, journal={Computers}, publisher={MDPI AG}, author={Cattan, Gr{\'e}goire and Andreev, Anton and Visinoni, Etienne}, year={2020}, month={Nov}, pages={92},
+  note = {Data: https://nemar.org/dataexplorer/detail?dataset\_id=nm000215 (CC BY 4.0; EEGDash id nm000215)}
+}
+
+% nm000216 BI2015a: reused entry Cattan2020
+@article{nm000216, title={Recommendations for Integrating a P300-Based Brain–Computer Interface in Virtual Reality Environments for Gaming: An Update}, volume={9}, ISSN={2073-431X}, url={http://dx.doi.org/10.3390/computers9040092}, DOI={10.3390/computers9040092}, number={4}, journal={Computers}, publisher={MDPI AG}, author={Cattan, Gr{\'e}goire and Andreev, Anton and Visinoni, Etienne}, year={2020}, month={Nov}, pages={92},
+  note = {Data: https://nemar.org/dataexplorer/detail?dataset\_id=nm000216 (CC BY 4.0; EEGDash id nm000216)}
+}
+
+% nm000217 BI2015b: reused entry Cattan2020
+@article{nm000217, title={Recommendations for Integrating a P300-Based Brain–Computer Interface in Virtual Reality Environments for Gaming: An Update}, volume={9}, ISSN={2073-431X}, url={http://dx.doi.org/10.3390/computers9040092}, DOI={10.3390/computers9040092}, number={4}, journal={Computers}, publisher={MDPI AG}, author={Cattan, Gr{\'e}goire and Andreev, Anton and Visinoni, Etienne}, year={2020}, month={Nov}, pages={92},
+  note = {Data: https://nemar.org/dataexplorer/detail?dataset\_id=nm000217 (CC BY 4.0; EEGDash id nm000217)}
+}
+
+% nm000232 THINGS-EEG2: reused entry Gifford2022
+@article{nm000232, title={A large and rich EEG dataset for modeling human visual object recognition}, volume={264}, ISSN={1053-8119}, url={http://dx.doi.org/10.1016/j.neuroimage.2022.119754}, DOI={10.1016/j.neuroimage.2022.119754}, journal={NeuroImage}, publisher={Elsevier BV}, author={Gifford, Alessandro T. and Dwivedi, Kshitij and Roig, Gemma and Cichy, Radoslaw M.}, year={2022}, month={Dec}, pages={119754},
+  note = {Data: https://osf.io/3jk45/ (CC BY 4.0; EEGDash id nm000232)}
+}
+
+% nm000238 SparrKULee: reused entry Bollens2023
+@misc{nm000238, doi = {10.48804/K3VSND},
+  url = {https://rdr.kuleuven.be/citation?persistentId=doi:10.48804/K3VSND},
+  author = {Bollens, Lies and Accou, Bernd and Van hamme, Hugo and Francart, Tom},
+  keywords = {Auditory EEG},
+  title = {SparrKULee: A Speech-evoked Auditory Response Repository of the KU Leuven, containing EEG of 85 participants},
+  publisher = {KU Leuven RDR},
+  year = {2023},
+  note = {Data: https://doi.org/10.48804/K3VSND (CC BY-NC 4.0; EEGDash id nm000238). Data descriptor: Accou et al. 2024, Data 9(8):94, doi:10.3390/data9080094}
+}
+
+% nm000244 BI2014a: reused entry Cattan2020
+@article{nm000244, title={Recommendations for Integrating a P300-Based Brain–Computer Interface in Virtual Reality Environments for Gaming: An Update}, volume={9}, ISSN={2073-431X}, url={http://dx.doi.org/10.3390/computers9040092}, DOI={10.3390/computers9040092}, number={4}, journal={Computers}, publisher={MDPI AG}, author={Cattan, Gr{\'e}goire and Andreev, Anton and Visinoni, Etienne}, year={2020}, month={Nov}, pages={92},
+  note = {Data: https://nemar.org/dataexplorer/detail?dataset\_id=nm000244 (CC BY 4.0; EEGDash id nm000244)}
+}
+
+% nm000245 Cho2017: reused entry Cho2017
+@article{nm000245, title={EEG datasets for motor imagery brain–computer interface}, volume={6}, ISSN={2047-217X}, url={http://dx.doi.org/10.1093/gigascience/gix034}, DOI={10.1093/gigascience/gix034}, number={7}, journal={GigaScience}, publisher={Oxford University Press (OUP)}, author={Cho, Hohyun and Ahn, Minkyu and Ahn, Sangtae and Kwon, Moonyoung and Jun, Sung Chan}, year={2017}, month={May},
+  note = {Data: https://doi.org/10.5524/100295 (CC0 1.0; EEGDash id nm000245)}
+}
+
+% nm000250 Dreyer2023: reused entry Dreyer2023
+@article{nm000250, title={A large EEG database with users' profile information for motor imagery brain-computer interface research}, volume={10}, ISSN={2052-4463}, url={http://dx.doi.org/10.1038/s41597-023-02445-z}, DOI={10.1038/s41597-023-02445-z}, number={1}, journal={Scientific Data}, publisher={Springer Science and Business Media LLC}, author={Dreyer, Pauline and Roc, Aline and Pillette, L{\'e}a and Rimbert, S{\'e}bastien and Lotte, Fabien}, year={2023}, month={Sept},
+  note = {Data: https://doi.org/10.5281/zenodo.8089820 (CC BY 4.0; EEGDash id nm000250)}
+}
+
+% nm000266 Sosulski2019: reused entry Sosulski2021
+@misc{nm000266, doi = {10.48550/ARXIV.2109.06011},
+  url = {https://arxiv.org/abs/2109.06011},
+  author = {Sosulski, Jan and H{\"u}bner, David and Klein, Aaron and Tangermann, Michael},
+  keywords = {Neurons and Cognition (q-bio.NC), Machine Learning (cs.LG), Applications (stat.AP), FOS: Biological sciences, FOS: Biological sciences, FOS: Computer and information sciences, FOS: Computer and information sciences},
+  title = {Online Optimization of Stimulation Speed in an Auditory Brain-Computer Interface under Time Constraints},
+  publisher = {arXiv},
+  year = {2021},
+  copyright = {arXiv.org perpetual, non-exclusive license},
+  note = {Data: https://doi.org/10.6094/UNIFR/154576 (CC BY-SA 4.0; EEGDash id nm000266)}
+}
+
+% nm000267 Shin2017A: reused entry Shin2017
+@article{nm000267, title={Open Access Dataset for EEG+NIRS Single-Trial Classification}, volume={25}, ISSN={1558-0210}, url={http://dx.doi.org/10.1109/tnsre.2016.2628057}, DOI={10.1109/tnsre.2016.2628057}, number={10}, journal={IEEE Transactions on Neural Systems and Rehabilitation Engineering}, publisher={Institute of Electrical and Electronics Engineers (IEEE)}, author={Shin, Jaeyoung and von Luhmann, Alexander and Blankertz, Benjamin and Kim, Do-Won and Jeong, Jichai and Hwang, Han-Jeong and Muller, Klaus-Robert}, year={2017}, month={Oct}, pages={1735–1745},
+  note = {Data: https://nemar.org/dataexplorer/detail?dataset\_id=nm000267 (GPL-3.0; EEGDash id nm000267)}
+}
+
+% nm000273 Lee2019SSVEP: reused entry Lee2019
+@misc{nm000273, doi = {10.5524/100542},
+  url = {http://gigadb.org/dataset/100542},
+  author = {Lee, Min-Ho and Kwon, O-Yeon and Kim, Yong-Jeong and Kim, Hong-Kyung and Lee, Young-Eun and Williamson, John and Fazli, Siamac and Lee, Seong-Whan},
+  keywords = {Neuroscience, Software, eeg datasets, brain-computer interface, event-related potential, steady-state visually evoked potential, motor-imagery, openbmi toolbox, bci illiteracy},
+  language = {en},
+  title = {Supporting data for "EEG Dataset and OpenBMI Toolbox for Three BCI Paradigms: An Investigation into BCI Illiteracy"},
+  publisher = {GigaScience Database},
+  year = {2019},
+  copyright = {Creative Commons Zero v1.0 Universal},
+  note = {Data: https://doi.org/10.5524/100542 (CC0 1.0; EEGDash id nm000273)}
+}
+
+% nm000323 Lee2019ERP: reused entry Lee2019
+@misc{nm000323, doi = {10.5524/100542},
+  url = {http://gigadb.org/dataset/100542},
+  author = {Lee, Min-Ho and Kwon, O-Yeon and Kim, Yong-Jeong and Kim, Hong-Kyung and Lee, Young-Eun and Williamson, John and Fazli, Siamac and Lee, Seong-Whan},
+  keywords = {Neuroscience, Software, eeg datasets, brain-computer interface, event-related potential, steady-state visually evoked potential, motor-imagery, openbmi toolbox, bci illiteracy},
+  language = {en},
+  title = {Supporting data for "EEG Dataset and OpenBMI Toolbox for Three BCI Paradigms: An Investigation into BCI Illiteracy"},
+  publisher = {GigaScience Database},
+  year = {2019},
+  copyright = {Creative Commons Zero v1.0 Universal},
+  note = {Data: https://doi.org/10.5524/100542 (CC0 1.0; EEGDash id nm000323)}
+}
+
+% nm000338 Lee2019-MI: reused entry Lee2019
+@misc{nm000338, doi = {10.5524/100542},
+  url = {http://gigadb.org/dataset/100542},
+  author = {Lee, Min-Ho and Kwon, O-Yeon and Kim, Yong-Jeong and Kim, Hong-Kyung and Lee, Young-Eun and Williamson, John and Fazli, Siamac and Lee, Seong-Whan},
+  keywords = {Neuroscience, Software, eeg datasets, brain-computer interface, event-related potential, steady-state visually evoked potential, motor-imagery, openbmi toolbox, bci illiteracy},
+  language = {en},
+  title = {Supporting data for "EEG Dataset and OpenBMI Toolbox for Three BCI Paradigms: An Investigation into BCI Illiteracy"},
+  publisher = {GigaScience Database},
+  year = {2019},
+  copyright = {Creative Commons Zero v1.0 Universal},
+  note = {Data: https://doi.org/10.5524/100542 (CC0 1.0; EEGDash id nm000338)}
+}
+
+% nm000385 Siena: reused entry siena2020
+@misc{nm000385,
+  title        = {Siena Scalp {EEG} Database (version 1.0.0)},
+  author       = {Detti, Paolo},
+  howpublished = {PhysioNet},
+  year         = {2020},
+  note = {Data: https://doi.org/10.13026/5d4a-j060 (CC BY 4.0; EEGDash id nm000385). Paper: Detti, Vatti and Zabalo Manrique de Lara 2020, Processes 8(7):846, doi:10.3390/pr8070846}
+}

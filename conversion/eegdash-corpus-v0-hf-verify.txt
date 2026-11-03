@@ -1,0 +1,9 @@
+repo EEGDash/eegdash-corpus-v0 at b1012bc4c914733d60c28f6ac074c5c24bdb278d  private False  gated auto
+hub files 44808; in the list 44801; lfs checked 39850, mismatches 0 []
+missing on the hub: []
+beyond the list: ['.gitattributes', 'CITATION.bib', 'LICENSES.csv', 'README.md', 'eegdash-corpus-v0-SHA256SUMS', 'eegdash-corpus-v0-buckets.csv', 'eegdash-corpus-v0-manifest.csv']
+small (git-stored) files to download: 4951, 20279917 bytes
+  40/4951 small files, 3 s
+  4040/4951 small files, 354 s
+small downloaded 4951, mismatches 0 []
+TOTAL mismatches 0

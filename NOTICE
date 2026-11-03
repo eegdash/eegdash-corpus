@@ -1,0 +1,33 @@
+EEGDash Corpus: code and conversion records
+
+Everything in this repository is licensed under the BSD 3-Clause License (LICENSE), except as stated below.
+
+patches/ (PATCHES.md, apply_patches.sh, zarr_loader.py) and tests/test_patches.py quote lines of reve_eeg
+(https://github.com/elouayas/reve_eeg, commit 06a7059): the anchor lines the patches search for and replace, and the
+original text the tests restore. Those quoted lines remain under reve_eeg's licence, reproduced here:
+
+MIT License
+
+Copyright (c) 2026 BRAIN - BRoader Artificial INtelligence
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all
+copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.
+
+The EEG data is not in this repository. The corpus is distributed on Hugging Face
+(https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0), and each of its datasets keeps its own licence, listed
+per dataset in corpus/LICENSES.csv.
