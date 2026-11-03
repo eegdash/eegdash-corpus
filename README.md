@@ -35,7 +35,7 @@ two datasets.
 | `scripts/merge_parts.py` | merges finished parts into one store, verifies it and writes the three side files (manifest, buckets, conversion report); `relabel` renames a dataset id in a merged store, `licence` writes each dataset's licence into its buckets |
 | `scripts/check_layout.py` | loads a store with reve_eeg's own data-loading code and pulls training batches: the test that a store is what `train.py` reads |
 | `scripts/export_encoder.py` | converts reve_eeg's `encoder.pth` (or an `encoder_epoch_<k>.pth` snapshot) into braindecode's REVE state dict |
-| `scripts/run_openeegbench.py` | scores one set of weights on OpenEEGBench (`run`) and tabulates the results (`summarize`, `compare`) |
+| `scripts/run_openeegbench.py` | scores one set of weights on OpenEEGBench (`run`), tabulates the results (`summarize`, `compare`, strategies named probe and fine-tune), checks and stages the task datasets (`cache`, `stage`) and merges a label scored on two machines (`merge`) |
 | `scripts/plot_loss.py`, `scripts/estimate_epochs.py` | read the trainer's log: the loss per epoch and per iteration; how many epochs fit in a time budget |
 | `scripts/*.txt`, `scripts/dry_shards.tsv` | id lists for `make_shards.py` (`openneuro_ids_other.txt`, `_hbn.txt`, `_peers.txt`: the 56 OpenNeuro datasets; `nemar_ids.txt`: 9 of the 21 NEMAR datasets, the other 12 are listed in `corpus/eegdash-corpus-v0.csv`); a test fixture |
 | `patches/` | the changes to reve_eeg's trainer: `PATCHES.md` (what each edit does and why), `apply_patches.sh` (applies them), `zarr_loader.py` (the Zarr reader, patch 8) |
