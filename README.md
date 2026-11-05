@@ -5,7 +5,7 @@ OpenNeuro and NEMAR, converted once with the preprocessing recipe of the REVE EE
 of 632 buckets, 14,074.7 hours and 6.21 billion tokens per epoch (3.6 TB). This repository holds the code and the
 records that built it; the data is on Hugging Face, gated, at
 [EEGDash/eegdash-corpus-v0](https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0) (tag `v1.0`), and the corpus
-is described in *EEGDash Corpus: A Training-Ready Public Corpus for EEG Foundation Models* (MLESP 2026, with IEEE
+is described in *EEGDash Corpus: Public, Training-Ready EEG That Pretrains a Foundation Model* (MLESP 2026, with IEEE
 BIBM 2026; see [Citation](#citation)).
 
 | | eegdash-corpus-v0 | from |
@@ -45,7 +45,29 @@ two datasets.
 | `requirements.txt` | the exact Python environment of every conversion, training and evaluation run |
 | `NOTICE` | the licence of the reve_eeg lines quoted in `patches/` and `tests/test_patches.py` |
 
-## The pipeline
+## Fetch the raw corpus by name
+
+With EEGDash's current `develop` version (the named-corpus API was merged in
+[EEGDash #521](https://github.com/eegdash/EEGDash/pull/521)), the corpus table is included in the package:
+
+```python
+from eegdash import EEGDashCorpus
+
+corpus = EEGDashCorpus("eegdash-corpus-v0", cache_dir="eegdash-cache")
+corpus.download()
+corpus.verify(level="hash")
+for recording in corpus.records():
+    raw = recording.raw
+```
+
+This fetches the archives' raw recordings, not the converted Zarr store. To train on the released
+store, download it from [Hugging Face](https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0)
+and follow [Reading the store](#reading-the-store). The corpus web page gives the
+[full dataset and paradigm breakdown](https://eegdash.org/corpus/v0.html#paradigms).
+
+## Reproduce the conversion
+
+The steps below document how the released store was built. They are not needed to read it.
 
 The usage lines of the scripts, and the commands below, use six shell variables; set them to your own paths:
 `$EEGDASH_CACHE` (the raw cache), `$CONVROOT` (shard plans, parts and the store), `$CKPTROOT` (checkpoints),
@@ -219,7 +241,7 @@ Cite the corpus and every dataset whose buckets you use (`CITATION.bib`, keyed b
 
 ```bibtex
 @inproceedings{eegdash_corpus_v0,
-  title     = {{EEGDash Corpus}: A Training-Ready Public Corpus for {EEG} Foundation Models},
+  title     = {{EEGDash Corpus}: Public, Training-Ready {EEG} That Pretrains a Foundation Model},
   author    = {Shahi, Kuber and Aristimunha, Bruno and Delorme, Arnaud},
   booktitle = {7th International Workshop on Machine Learning for EEG Signal Processing (MLESP 2026), with IEEE BIBM 2026},
   year      = {2026},
