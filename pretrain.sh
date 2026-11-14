@@ -9,14 +9,15 @@
 #
 #   NNODES=4 NODE_RANK=0 MAIN_HOST=node01 DATA=... CKPT=... bash pretrain.sh     # on node01; NODE_RANK=1, 2, 3 on the others
 #
-# Run again with the same CKPT, it continues after the last saved epoch. It writes $CKPT/run/encoder.pth (the
+# REVE's patched code is expected beside this repository (../reve_eeg, as the Quick start clones it); REVE_EEG names
+# another place. Run again with the same CKPT, it continues after the last saved epoch. It writes $CKPT/run/encoder.pth (the
 # pretrained encoder) and $CKPT/run/loss.csv. Every other setting (SEED, EPOCHS, ENCODER=small, WORKERS,
 # MIXED_PRECISION, ...) is train.sh's, which this script calls: its header lists them.
 set -euo pipefail
 HERE=$(cd "$(dirname "$0")" && pwd)
 : "${DATA:?set DATA to the eegdash-corpus-v0.zarr store (download.sh prints it)}"
 : "${CKPT:?set CKPT to a directory for the checkpoints}"
-export DATA CKPT SEED=${SEED:-2} REVE_EEG=${REVE_EEG:-$HOME/reve_eeg}
+export DATA CKPT SEED=${SEED:-2} REVE_EEG=${REVE_EEG:-$(dirname "$HERE")/reve_eeg}   # REVE's code: beside this repository unless REVE_EEG says otherwise
 export RUN=${RUN:-reve-base-v0-seed$SEED}
 
 grep -q "PATCH 8" "$REVE_EEG/src/utils/data_loading.py" 2> /dev/null || {

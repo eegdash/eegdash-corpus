@@ -111,6 +111,19 @@ def test_pretrain_resumes_a_run_that_saved_a_state(tmp_path, stubs):
     assert "checkpointing.load_last_state=True" in launch_line(stubs[1])
 
 
+def test_pretrain_finds_reve_eeg_beside_the_repository(tmp_path, stubs):
+    """The Quick start clones reve_eeg next to this repository, not into the home directory (small on clusters)."""
+    repo = tmp_path / "work" / "eegdash-corpus"
+    repo.mkdir(parents=True)
+    shutil.copy(REPO / "pretrain.sh", repo / "pretrain.sh")
+    (repo / "train.sh").write_text(f'#!/bin/bash\necho "train REVE_EEG=$REVE_EEG" >> "{stubs[1]}"\n')
+    reve = patched_checkout(tmp_path / "work")
+    env = {"DATA": "/d/x.zarr", "CKPT": str(tmp_path / "ckpt"), "PATH": f"{stubs[0]}:/usr/bin:/bin"}
+    r = subprocess.run(["bash", str(repo / "pretrain.sh")], capture_output=True, text=True, env=env)
+    assert r.returncode == 0, r.stderr
+    assert stubs[1].read_text().strip() == f"train REVE_EEG={reve}"
+
+
 def test_pretrain_refuses_a_missing_store_and_an_unpatched_checkout(tmp_path, stubs):
     reve = patched_checkout(tmp_path)
     assert run("pretrain.sh", [], {"CKPT": "/c", "REVE_EEG": str(reve)}, stubs).returncode != 0

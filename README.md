@@ -29,12 +29,12 @@ Three steps, the same on a workstation or a cluster; the tutorial page
 [Pretraining REVE](https://eegdash.org/corpus/pretraining_reve.html) walks through them.
 
 ```bash
-# 1. Install: a Python 3.11 environment, then REVE's code with this repository's patches
+# 1. Install, all in the folder you start in: this repository, a Python 3.11 environment and REVE's code with the patches
 git clone https://github.com/eegdash/eegdash-corpus.git && cd eegdash-corpus
-python3.11 -m venv ~/reve-env && source ~/reve-env/bin/activate
+python3.11 -m venv ../reve-env && source ../reve-env/bin/activate
 pip install -r requirements-pretraining.txt
-git clone https://github.com/elouayas/reve_eeg.git ~/reve_eeg && git -C ~/reve_eeg checkout 06a7059
-bash patches/apply_patches.sh ~/reve_eeg
+git clone https://github.com/elouayas/reve_eeg.git ../reve_eeg && git -C ../reve_eeg checkout 06a7059
+bash patches/apply_patches.sh ../reve_eeg
 hf auth login                         # an account that accepted the dataset's terms on Hugging Face
 
 # 2. Download the corpus (3.6 TB)
