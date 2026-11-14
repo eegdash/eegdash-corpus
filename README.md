@@ -23,6 +23,32 @@ BIBM 2026; preprint [arXiv:2611.06356](https://arxiv.org/abs/2611.06356); see [C
 A bucket is every session of one dataset (within one shard) that shares one exact channel set; a bucket never spans
 two datasets.
 
+## Quick start: pretrain REVE on the corpus
+
+Three steps, the same on a workstation or a cluster; the tutorial page
+[Pretraining REVE](https://eegdash.org/corpus/pretraining_reve.html) walks through them.
+
+```bash
+# 1. Install: a Python 3.11 environment, then REVE's code with this repository's patches
+git clone https://github.com/eegdash/eegdash-corpus.git && cd eegdash-corpus
+python3.11 -m venv ~/reve-env && source ~/reve-env/bin/activate
+pip install -r requirements-pretraining.txt
+git clone https://github.com/elouayas/reve_eeg.git ~/reve_eeg && git -C ~/reve_eeg checkout 06a7059
+bash patches/apply_patches.sh ~/reve_eeg
+hf auth login                         # an account that accepted the dataset's terms on Hugging Face
+
+# 2. Download the corpus (3.6 TB)
+bash download.sh /data
+
+# 3. Pretrain REVE-Base with the paper's settings (17 epochs)
+DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
+```
+
+`pretrain.sh` uses every GPU of the machine. The paper's runs used 16 GPUs on 4 machines: there the same line runs
+once per machine with `NNODES=4`, `NODE_RANK` (0 to 3) and `MAIN_HOST` (the first machine's name); an epoch then
+takes about 1.3 to 1.8 hours depending on the GPU. The result is `$CKPT/run/encoder.pth`; `scripts/export_encoder.py`
+converts it for braindecode ([Reproduce the conversion](#reproduce-the-conversion), step 5).
+
 ## What is here
 
 | path | content |
@@ -39,9 +65,12 @@ two datasets.
 | `scripts/plot_loss.py`, `scripts/estimate_epochs.py` | read the trainer's log: the loss per epoch and per iteration; how many epochs fit in a time budget |
 | `scripts/*.txt`, `scripts/dry_shards.tsv` | id lists for `make_shards.py` (`openneuro_ids_other.txt`, `_hbn.txt`, `_peers.txt`: the 56 OpenNeuro datasets; `nemar_ids.txt`: 9 of the 21 NEMAR datasets, the other 12 are listed in `corpus/eegdash-corpus-v0.csv`); a test fixture |
 | `patches/` | the changes to reve_eeg's trainer: `PATCHES.md` (what each edit does and why), `apply_patches.sh` (applies them), `zarr_loader.py` (the Zarr reader, patch 8) |
-| `train.sh` | launches reve_eeg's `src/train.py` on the store with the paper's settings |
+| `download.sh` | downloads the released store from Hugging Face and, with `VERIFY=1`, checks every file against the SHA-256 list |
+| `pretrain.sh` | pretrains REVE-Base on the store, on one machine or several: checks the patched reve_eeg checkout, counts the GPUs, resumes a run that saved a state, then calls `train.sh` |
+| `train.sh` | launches reve_eeg's `src/train.py` on the store with the paper's settings; its header lists every setting |
 | `tests/` | pytest suite for the scripts, the patches and the loader |
 | `CITATION.bib` | the corpus, REVE, and each of the 77 datasets keyed by its dataset id |
+| `requirements-pretraining.txt` | the short list `download.sh` and `pretrain.sh` need, at the versions `requirements.txt` pins |
 | `requirements.txt` | the exact Python environment of every conversion, training and evaluation run |
 | `NOTICE` | the licence of the reve_eeg lines quoted in `patches/` and `tests/test_patches.py` |
 
@@ -62,7 +91,8 @@ for recording in corpus.records():
 
 This fetches the archives' raw recordings, not the converted Zarr store. To train on the released
 store, download it from [Hugging Face](https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0)
-and follow [Reading the store](#reading-the-store). The corpus web page gives the
+(`download.sh`) and follow the [Quick start](#quick-start-pretrain-reve-on-the-corpus) or
+[Reading the store](#reading-the-store). The corpus web page gives the
 [full dataset and paradigm breakdown](https://eegdash.org/corpus/v0.html#paradigms).
 
 ## Reproduce the conversion
@@ -138,6 +168,8 @@ A downloaded copy of the store is checked against the released list with
 
 **5. Train and score.** Clone reve_eeg at the commit the patches target, patch it, and launch `train.sh` (its header
 lists every setting; the paper's two runs used `SEED=2` and `SEED=3`, 17 epochs, learning rate 2.4e-4, batch 300).
+`pretrain.sh` is the short form of the same launch: it fills in the run name, the GPU count and the resume flag and
+calls `train.sh` (the [Quick start](#quick-start-pretrain-reve-on-the-corpus)).
 
 ```bash
 git clone https://github.com/elouayas/reve_eeg.git $REVE_EEG && git -C $REVE_EEG checkout 06a7059
@@ -211,7 +243,8 @@ duplicates it).
 
 ## Environment
 
-`requirements.txt` is the exact environment of every run (its header gives the commands): Python 3.11, torch 2.5.1
+Two files. `requirements-pretraining.txt` is the short list that downloading the store and pretraining on it need
+(15 packages, the same versions). `requirements.txt` is the exact environment of every run (its header gives the commands): Python 3.11, torch 2.5.1
 and torchaudio 2.5.1 built for CUDA 12.1 (from the PyTorch index), zarr 3.1.6, mne 1.13.0, accelerate 1.15.0,
 hydra-core 1.3.7, open-eeg-bench 0.6.0. braindecode and eegdash are editable installs of the commits named in the
 header (braindecode `59a1e8b8`, eegdash `0a70e9e`). reve_eeg is run from its checkout and never pip-installed: its

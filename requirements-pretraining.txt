@@ -1,0 +1,23 @@
+# requirements-pretraining.txt: what download.sh and pretrain.sh need, and nothing else. Python 3.11.
+#
+#   pip install -r requirements-pretraining.txt
+#
+# Every version is the one requirements.txt pins (the full environment of the paper's conversion, training and
+# scoring). The paper's runs used torch built for CUDA 12.1: to get that build, add
+# `--extra-index-url https://download.pytorch.org/whl/cu121` and ask for torch==2.5.1+cu121; ARM (aarch64) machines
+# used torch 2.6.0. reve_eeg itself is run from its checkout and never pip-installed: its pyproject would replace torch.
+torch==2.5.1
+accelerate==1.15.0
+hydra-core==1.3.7
+omegaconf==2.3.1
+einops==0.8.2
+transformers==4.56.2
+zarr==3.1.6
+numcodecs==0.16.5
+numpy==2.4.6
+scipy==1.17.1
+rich==15.0.0
+packaging==26.3
+tqdm==4.70.0
+huggingface_hub==0.36.2
+hf-xet==1.6.0

@@ -1,7 +1,8 @@
 #!/bin/bash
 # Pretrain REVE from scratch on eegdash-corpus-v0 with reve_eeg's own trainer (src/train.py), patched by
 # patches/apply_patches.sh so that a data.path ending in .zarr is read from the store. Cluster-neutral: run it once per
-# node, inside whatever scheduler you use.
+# node, inside whatever scheduler you use. pretrain.sh is the short form: it fills in RUN, NPROC and RESUME and calls
+# this script.
 #
 #   DATA=/data/eegdash-corpus-v0.zarr RUN=reve-base-v0-run2 CKPT=/ckpt/reve-base-v0-run2 REVE_EEG=~/reve_eeg SEED=2 NPROC=4 bash train.sh
 #
