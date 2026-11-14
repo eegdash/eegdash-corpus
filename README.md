@@ -29,20 +29,28 @@ Three steps, the same on a workstation or a cluster; the tutorial page
 [Pretraining REVE](https://eegdash.org/corpus/pretraining_reve.html) walks through them.
 
 ```bash
-# 1. Install, all in the folder you start in: this repository, a Python 3.11 environment and REVE's code with the patches
+# 1. Download the corpus (3.6 TB), with the newest Hugging Face client in a small environment of its own
 git clone https://github.com/eegdash/eegdash-corpus.git && cd eegdash-corpus
+python3.11 -m venv ../hf-env && source ../hf-env/bin/activate
+pip install -U huggingface_hub hf_xet
+hf auth login                         # an account that accepted the dataset's terms on Hugging Face
+bash download.sh /data
+deactivate
+
+# 2. Install the training environment and REVE's code with the patches, beside this repository
 python3.11 -m venv ../reve-env && source ../reve-env/bin/activate
 pip install -r requirements-pretraining.txt
 git clone https://github.com/elouayas/reve_eeg.git ../reve_eeg && git -C ../reve_eeg checkout 06a7059
 bash patches/apply_patches.sh ../reve_eeg
-hf auth login                         # an account that accepted the dataset's terms on Hugging Face
-
-# 2. Download the corpus (3.6 TB)
-bash download.sh /data
 
 # 3. Pretrain REVE-Base with the paper's settings (17 epochs)
 DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
 ```
+
+The download has its own environment because the training environment pins an older Hugging Face client (the one
+REVE's code asks for), which spends one request per file: a free account gets 1,000 per five minutes, and the store
+has 44,801 files. Everything lands side by side in the folder you start in: this repository, `hf-env`, `reve-env`
+and `reve_eeg`.
 
 `pretrain.sh` uses every GPU of the machine. The paper's runs used 16 GPUs on 4 machines: there the same line runs
 once per machine with `NNODES=4`, `NODE_RANK` (0 to 3) and `MAIN_HOST` (the first machine's name); an epoch then
@@ -65,12 +73,12 @@ converts it for braindecode ([Reproduce the conversion](#reproduce-the-conversio
 | `scripts/plot_loss.py`, `scripts/estimate_epochs.py` | read the trainer's log: the loss per epoch and per iteration; how many epochs fit in a time budget |
 | `scripts/*.txt`, `scripts/dry_shards.tsv` | id lists for `make_shards.py` (`openneuro_ids_other.txt`, `_hbn.txt`, `_peers.txt`: the 56 OpenNeuro datasets; `nemar_ids.txt`: 9 of the 21 NEMAR datasets, the other 12 are listed in `corpus/eegdash-corpus-v0.csv`); a test fixture |
 | `patches/` | the changes to reve_eeg's trainer: `PATCHES.md` (what each edit does and why), `apply_patches.sh` (applies them), `zarr_loader.py` (the Zarr reader, patch 8) |
-| `download.sh` | downloads the released store from Hugging Face and, with `VERIFY=1`, checks every file against the SHA-256 list |
+| `download.sh` | downloads the released store from Hugging Face until every file of the SHA-256 list is there, waiting whenever the Hub's rate limit pauses it; run it with the newest Hugging Face client (Quick start, step 1); with `VERIFY=1` it also checks every file against that list |
 | `pretrain.sh` | pretrains REVE-Base on the store, on one machine or several: checks the patched reve_eeg checkout, counts the GPUs, resumes a run that saved a state, then calls `train.sh` |
 | `train.sh` | launches reve_eeg's `src/train.py` on the store with the paper's settings; its header lists every setting |
 | `tests/` | pytest suite for the scripts, the patches and the loader |
 | `CITATION.bib` | the corpus, REVE, and each of the 77 datasets keyed by its dataset id |
-| `requirements-pretraining.txt` | the short list `download.sh` and `pretrain.sh` need, at the versions `requirements.txt` pins |
+| `requirements-pretraining.txt` | the short list `pretrain.sh` needs, at the versions `requirements.txt` pins |
 | `requirements.txt` | the exact Python environment of every conversion, training and evaluation run |
 | `NOTICE` | the licence of the reve_eeg lines quoted in `patches/` and `tests/test_patches.py` |
 
@@ -243,8 +251,9 @@ duplicates it).
 
 ## Environment
 
-Two files. `requirements-pretraining.txt` is the short list that downloading the store and pretraining on it need
-(15 packages, the same versions). `requirements.txt` is the exact environment of every run (its header gives the commands): Python 3.11, torch 2.5.1
+Two files. `requirements-pretraining.txt` is the short list that pretraining on the store needs
+(15 packages, the same versions); the download runs apart from it, with the newest `huggingface_hub` and `hf_xet`
+(Quick start, step 1). `requirements.txt` is the exact environment of every run (its header gives the commands): Python 3.11, torch 2.5.1
 and torchaudio 2.5.1 built for CUDA 12.1 (from the PyTorch index), zarr 3.1.6, mne 1.13.0, accelerate 1.15.0,
 hydra-core 1.3.7, open-eeg-bench 0.6.0. braindecode and eegdash are editable installs of the commits named in the
 header (braindecode `59a1e8b8`, eegdash `0a70e9e`). reve_eeg is run from its checkout and never pip-installed: its

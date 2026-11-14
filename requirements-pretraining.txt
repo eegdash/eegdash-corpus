@@ -1,4 +1,5 @@
-# requirements-pretraining.txt: what download.sh and pretrain.sh need, and nothing else. Python 3.11.
+# requirements-pretraining.txt: what pretrain.sh needs, and nothing else. Python 3.11. (download.sh runs in its own
+# small environment with the newest huggingface_hub and hf_xet: README, Quick start, step 1.)
 #
 #   pip install -r requirements-pretraining.txt
 #

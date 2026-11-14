@@ -6,6 +6,7 @@ import os
 import re
 import shutil
 import subprocess
+import sys
 from pathlib import Path
 
 import pytest
@@ -13,24 +14,72 @@ import pytest
 REPO = Path(__file__).resolve().parents[1]
 
 
+FAKE_HUB = '''"""Stand-in for huggingface_hub: records each call; FAKE_HUB_OUTCOMES says how each download call ends."""
+import os
+from pathlib import Path
+
+LOG = Path(os.environ["FAKE_HUB_LOG"])
+NAMES = ["eegdash-corpus-v0.zarr/zarr.json", "eegdash-corpus-v0.zarr/0/data/c/0/0/0"]
+
+
+def snapshot_download(repo_id, repo_type, revision, local_dir):
+    before = sum(c.startswith("snapshot_download") for c in LOG.read_text().splitlines()) if LOG.exists() else 0
+    with LOG.open("a") as f:
+        f.write(f"snapshot_download {repo_id} {repo_type} {revision} {local_dir}\\n")
+    outcomes = os.environ.get("FAKE_HUB_OUTCOMES", "ok").split(",")
+    outcome = outcomes[min(before, len(outcomes) - 1)]
+    if outcome == "refused":  # the rate limit as the library raises it: wrapped in another error
+        try:
+            raise RuntimeError("429 Client Error: Too Many Requests for url: https://huggingface.co/api/datasets/x")
+        except RuntimeError as error:
+            raise LookupError("cannot find the requested files") from error
+    if outcome == "denied":
+        raise PermissionError("403 Client Error: Forbidden for url: https://huggingface.co/api/datasets/x")
+    dest = Path(local_dir)
+    sums = dest / "eegdash-corpus-v0-SHA256SUMS"
+    if not sums.exists():
+        dest.mkdir(parents=True, exist_ok=True)
+        sums.write_text("".join(f"{'0' * 64}  {n}\\n" for n in NAMES))
+    names = [line.split()[1] for line in sums.read_text().splitlines()]
+    for name in names[:1] if outcome == "early" else names:  # early: returns as if done with files missing
+        (dest / name).parent.mkdir(parents=True, exist_ok=True)
+        if not (dest / name).exists():
+            (dest / name).write_bytes(name.encode())
+    return str(dest)
+'''
+
+
 @pytest.fixture
 def stubs(tmp_path):
-    """A bin/ of stand-ins (hf, accelerate, nvidia-smi) that append their arguments to calls.log."""
+    """A bin/ of stand-ins (hf, accelerate, nvidia-smi, python with a fake huggingface_hub) that log their calls to calls.log."""
     bin_dir, log = tmp_path / "bin", tmp_path / "calls.log"
     bin_dir.mkdir()
     for name in ("hf", "accelerate"):
         (bin_dir / name).write_text(f'#!/bin/bash\necho "{name} $*" >> "{log}"\n')
     (bin_dir / "nvidia-smi").write_text('#!/bin/bash\nfor i in 0 1 2 3; do echo "GPU $i: stub"; done\n')
+    (bin_dir / "python").write_text(f'#!/bin/bash\nexec "{sys.executable}" "$@"\n')
     for f in bin_dir.iterdir():
         f.chmod(0o755)
+    hub = tmp_path / "fake" / "huggingface_hub"
+    hub.mkdir(parents=True)
+    (hub / "__init__.py").write_text(FAKE_HUB)
+    (hub / "utils.py").write_text(
+        'import os\n\n\ndef disable_progress_bars(name=None):\n'
+        '    with open(os.environ["FAKE_HUB_LOG"], "a") as f:\n        f.write(f"disable_progress_bars {name}\\n")\n'
+    )
     return bin_dir, log
 
 
 def run(script: str, args: list[str], env_extra: dict, stubs) -> subprocess.CompletedProcess:
-    bin_dir, _ = stubs
+    bin_dir, log = stubs
     keep = {k: v for k, v in os.environ.items() if k in ("HOME", "TMPDIR", "LANG")}
-    env = {**keep, "PATH": f"{bin_dir}:/usr/bin:/bin:/sbin:/usr/sbin", **env_extra}
+    fake = {"PYTHONPATH": str(bin_dir.parent / "fake"), "FAKE_HUB_LOG": str(log), "WAIT": "0"}
+    env = {**keep, "PATH": f"{bin_dir}:/usr/bin:/bin:/sbin:/usr/sbin", **fake, **env_extra}
     return subprocess.run(["bash", str(REPO / script), *args], capture_output=True, text=True, env=env)
+
+
+def downloads(log: Path) -> list[str]:
+    return [c for c in log.read_text().splitlines() if c.startswith("snapshot_download")]
 
 
 def patched_checkout(tmp_path: Path) -> Path:
@@ -46,8 +95,31 @@ def test_download_fetches_the_tagged_store_and_prints_the_path(tmp_path, stubs):
     assert r.returncode == 0, r.stderr
     calls = stubs[1].read_text().splitlines()
     assert calls[0] == "hf auth whoami"
-    assert calls[1] == f"hf download EEGDash/eegdash-corpus-v0 --repo-type dataset --revision v1.0 --local-dir {tmp_path}/data/eegdash-corpus-v0"
+    assert downloads(stubs[1]) == [f"snapshot_download EEGDash/eegdash-corpus-v0 dataset v1.0 {tmp_path}/data/eegdash-corpus-v0"]
+    assert {"disable_progress_bars huggingface_hub.xet_get", "disable_progress_bars huggingface_hub.http_get"} <= set(calls)
     assert r.stdout.strip().splitlines()[-1] == f"DATA={tmp_path}/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr"
+
+
+def test_download_waits_out_the_rate_limit_and_goes_on(tmp_path, stubs):
+    """A free account is refused after 1,000 requests in five minutes (Expanse, 2026-11-14): wait, do not stop."""
+    r = run("download.sh", [str(tmp_path / "data")], {"FAKE_HUB_OUTCOMES": "refused,refused,ok"}, stubs)
+    assert r.returncode == 0, r.stderr
+    assert len(downloads(stubs[1])) == 3 and r.stdout.count("rate limit") == 2
+    assert (tmp_path / "data/eegdash-corpus-v0/eegdash-corpus-v0.zarr/0/data/c/0/0/0").exists()
+
+
+def test_download_does_not_take_an_early_return_for_a_finished_store(tmp_path, stubs):
+    """When the listing request is refused the library returns the folder as it is, without an error."""
+    r = run("download.sh", [str(tmp_path / "data")], {"FAKE_HUB_OUTCOMES": "early,ok"}, stubs)
+    assert r.returncode == 0, r.stderr
+    assert len(downloads(stubs[1])) == 2
+    assert (tmp_path / "data/eegdash-corpus-v0/eegdash-corpus-v0.zarr/0/data/c/0/0/0").exists()
+
+
+def test_download_stops_on_any_other_error(tmp_path, stubs):
+    r = run("download.sh", [str(tmp_path / "data")], {"FAKE_HUB_OUTCOMES": "denied"}, stubs)
+    assert r.returncode != 0 and "403 Client Error" in r.stderr and "DATA=" not in r.stdout
+    assert len(downloads(stubs[1])) == 1
 
 
 def test_download_refuses_without_a_directory_or_a_login(tmp_path, stubs):
