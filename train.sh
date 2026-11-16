@@ -28,7 +28,8 @@
 #
 # Multi-node launches need the usual Accelerate rendezvous flags on every node (--machine_rank, --main_process_ip,
 # --main_process_port), passed through ACCELERATE_ARGS; the paper's runs derived them from the scheduler (machine rank =
-# the node's index, main process = the first node, port 29500) and added --multi_gpu when NNODES > 1, as this script does.
+# the node's index, main process = the first node, port 29500). --multi_gpu is passed whenever NPROC > 1, on one
+# machine as well: without it the launcher follows a saved `accelerate config`, which may say one GPU.
 #
 # Writes under $CKPT: states/$RUN/epoch_* and states/$RUN/last (Accelerate states, for RESUME=True) and run/ (Hydra's
 # working directory: encoder.pth, encoder_epoch_<k>.pth, loss.csv, .hydra/). Weights & Biases logging is off.
@@ -44,7 +45,7 @@ ENCODER=${ENCODER:-base}; EPOCHS=${EPOCHS:-17}; BS=${BS:-300}; LR=${LR:-2.4e-4};
 RESUME=${RESUME:-False}; MIXED_PRECISION=${MIXED_PRECISION:-fp16}
 export REVE_EXCLUDE_DATASETS=${EXCLUDE_DATASETS:-}
 export REVE_ENCODER_EVERY=${REVE_ENCODER_EVERY:-5}
-MULTI=""; [ "$NNODES" -gt 1 ] && MULTI="--multi_gpu"
+MULTI=""; [ "$NPROC" -gt 1 ] && MULTI="--multi_gpu"       # stated, not left to a saved `accelerate config`
 
 echo "run $RUN  encoder $ENCODER  lr $LR  seed $SEED  nodes $NNODES  processes $NPROC  epochs $EPOCHS  batch $BS  resume $RESUME  data $DATA${EXCLUDE_DATASETS:+  excluding $EXCLUDE_DATASETS}  start $(date '+%F %T')"
 mkdir -p "$CKPT"

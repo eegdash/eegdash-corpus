@@ -156,10 +156,19 @@ def test_pretrain_on_one_machine_uses_its_gpus_and_the_papers_settings(tmp_path,
     r = run("pretrain.sh", [], env, stubs)
     assert r.returncode == 0, r.stderr
     line = launch_line(stubs[1])
-    assert "--num_processes 4 --num_machines 1 " in line and "--machine_rank" not in line and "--multi_gpu" not in line
+    assert "--num_processes 4 --num_machines 1 " in line and "--machine_rank" not in line
+    assert "--multi_gpu" in line  # stated on one machine too: a saved `accelerate config` may say one GPU
     for setting in ("encoder=base", "data.path=/d/eegdash-corpus-v0.zarr", "trainer.epochs=17", "trainer.batch_size=300",
                     "trainer.lr=2.4e-4", "seed=2", "name=reve-base-v0-seed2", "checkpointing.load_last_state=False"):
         assert setting in line, setting
+
+
+def test_pretrain_with_one_gpu_launches_one_process(tmp_path, stubs):
+    env = {"DATA": "/d/x.zarr", "CKPT": str(tmp_path / "ckpt"), "REVE_EEG": str(patched_checkout(tmp_path)), "GPUS": "1"}
+    r = run("pretrain.sh", [], env, stubs)
+    assert r.returncode == 0, r.stderr
+    line = launch_line(stubs[1])
+    assert "--num_processes 1 --num_machines 1 " in line and "--multi_gpu" not in line
 
 
 def test_pretrain_on_several_machines_passes_the_rendezvous(tmp_path, stubs):
