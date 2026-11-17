@@ -6,7 +6,7 @@ of 632 buckets, 14,074.7 hours and 6.21 billion tokens per epoch (3.6 TB). This 
 records that built it; the data is on Hugging Face, gated, at
 [EEGDash/eegdash-corpus-v0](https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0) (tag `v1.0`), and the corpus
 is described in *EEGDash Corpus: A Training-Ready Public Corpus for EEG Foundation Models* (MLESP 2026, with IEEE
-BIBM 2026; preprint [arXiv:2611.06356](https://arxiv.org/abs/2611.06356); see [Citation](#citation)).
+BIBM 2026; preprint [arXiv:2611.06356](https://arxiv.org/abs/2611.06356); see [Citation](#10-citation)).
 
 | | eegdash-corpus-v0 | from |
 |---|---:|---|
@@ -23,7 +23,7 @@ BIBM 2026; preprint [arXiv:2611.06356](https://arxiv.org/abs/2611.06356); see [C
 A bucket is every session of one dataset (within one shard) that shares one exact channel set; a bucket never spans
 two datasets.
 
-## Quick start: pretrain REVE on the corpus
+## 1. Quick start: pretrain REVE on the corpus
 
 Three steps, the same on a workstation or a cluster; the tutorial page
 [Pretraining REVE](https://eegdash.org/corpus/pretraining_reve.html) walks through them.
@@ -43,21 +43,133 @@ pip install -r requirements-pretraining.txt
 git clone https://github.com/elouayas/reve_eeg.git ../reve_eeg && git -C ../reve_eeg checkout 06a7059
 bash patches/apply_patches.sh ../reve_eeg
 
-# 3. Pretrain REVE-Base with the paper's settings (17 epochs)
+# 3. Pretrain REVE-Base with the paper's settings (17 epochs), on one machine
 DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
 ```
 
-The download has its own environment because the training environment pins an older Hugging Face client (the one
+**Download.** The download has its own environment because the training environment pins an older Hugging Face client (the one
 REVE's code asks for), which spends one request per file: a free account gets 1,000 per five minutes, and the store
 has 44,801 files. Everything lands side by side in the folder you start in: this repository, `hf-env`, `reve-env`
-and `reve_eeg`.
+and `reve_eeg`. Where there is no `python3.11` command, any Python 3.11 does in its place in the two `venv` lines,
+a conda environment's `python` for instance.
 
-`pretrain.sh` uses every GPU of the machine. The paper's runs used 16 GPUs on 4 machines: there the same line runs
-once per machine with `NNODES=4`, `NODE_RANK` (0 to 3) and `MAIN_HOST` (the first machine's name); an epoch then
-takes about 1.3 to 1.8 hours depending on the GPU. The result is `$CKPT/run/encoder.pth`; `scripts/export_encoder.py`
-converts it for braindecode ([Reproduce the conversion](#reproduce-the-conversion), step 5).
+The download runs for hours, so start it where it survives a logout (`tmux`, `screen` or a job); run again after
+an interruption, it goes on where it stopped. `VERIFY=1 JOBS=16 bash download.sh /data` also checks every file
+against the published SHA-256 list and ends with `checksums OK`. On an HPC cluster the download took about
+5.5 hours (near 200 MB/s) and the check about 3.5 hours.
 
-## What is here
+**Pretrain on one machine.** Step 3 above: one line, and `pretrain.sh` uses every GPU the machine has.
+
+```bash
+DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
+```
+
+**Pretrain on several machines.** The paper's runs used 16 GPUs: 4 machines with 4 GPUs each. The command is run
+once on every machine, four times for four machines, each time with three more variables in front. By hand, that is
+a login to each machine; a job scheduler can start the four for you.
+
+```bash
+# on node01, the first machine
+NNODES=4 NODE_RANK=0 MAIN_HOST=node01 DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
+# on node02
+NNODES=4 NODE_RANK=1 MAIN_HOST=node01 DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
+# on node03
+NNODES=4 NODE_RANK=2 MAIN_HOST=node01 DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
+# on node04
+NNODES=4 NODE_RANK=3 MAIN_HOST=node01 DATA=/data/eegdash-corpus-v0/eegdash-corpus-v0.zarr CKPT=/ckpt/reve-base-v0 bash pretrain.sh
+```
+
+- `NNODES`: the number of machines, 4 here.
+- `NODE_RANK`: the index of the machine the line runs on, 0 on the first, then 1, 2 and 3.
+- `MAIN_HOST`: the name of the first machine, the one with `NODE_RANK=0`; the others connect to it.
+
+Each machine uses every GPU it has, so 4 machines with 4 GPUs give 16 training processes. Every machine needs the
+same number of GPUs and must see the same `DATA` and `CKPT` folders; training starts once the command runs on all
+of them.
+
+**Results.** The paper trained REVE-Base twice this way (seeds 2 and 3), 17 epochs each: 23.5 hours on A40 GPUs
+and 29.7 hours on V100 GPUs. A run writes the encoder, `$CKPT/run/encoder.pth`, and the loss of every epoch,
+`$CKPT/run/loss.csv`.
+
+The two encoders, scored on seven public OpenEEGBench tasks, against the released REVE-Base (chance-adjusted
+balanced accuracy, 0 = chance; mean of the two runs):
+
+| Linear probe | PhysioNet-MI | BCIC-IV-2a | BCIC-2020-3 | FACED | Mumtaz | Zyma | CHB-MIT | mean |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| released REVE-Base | 0.377 | 0.191 | 0.088 | 0.167 | 0.681 | 0.295 | 0.529 | **0.333** |
+| pretrained on the corpus | 0.373 | 0.230 | 0.095 | 0.159 | 0.694 | 0.340 | 0.423 | **0.331** |
+
+| Full fine-tuning | PhysioNet-MI | BCIC-IV-2a | BCIC-2020-3 | FACED | Mumtaz | Zyma | CHB-MIT | mean |
+|---|---:|---:|---:|---:|---:|---:|---:|---:|
+| released REVE-Base | 0.436 | 0.352 | 0.041 | 0.183 | 0.675 | 0.323 | 0.264 | **0.325** |
+| pretrained on the corpus | 0.379 | 0.296 | 0.041 | 0.160 | 0.667 | 0.226 | 0.144 | **0.273** |
+
+The released model's scores are the OpenEEGBench leaderboard's; CHB-MIT, which the leaderboard does not score, is
+the released weights run through the same scoring.
+
+## 2. Settings of the scripts
+
+Every setting is an environment variable written before the command, as `DATA` and `CKPT` are above; `download.sh`
+also takes one argument, the target directory.
+
+### `download.sh`
+
+```bash
+bash download.sh <directory>
+```
+
+| setting | default | meaning |
+|---|---|---|
+| `<directory>` | required | The one argument: a directory with 4 TB free. The store lands in `<directory>/eegdash-corpus-v0/eegdash-corpus-v0.zarr`. |
+| `VERIFY` | `0` | `1` checks every file against the published SHA-256 list after the download (hours on the full store) and prints `checksums OK`. |
+| `JOBS` | `8` | With `VERIFY=1`, the number of files hashed at a time. |
+| `WAIT` | `60` | Seconds to wait before going on when the Hub's rate limit pauses the download. |
+
+### `pretrain.sh`
+
+```bash
+DATA=<store> CKPT=<directory> bash pretrain.sh
+```
+
+| setting | default | meaning |
+|---|---|---|
+| `DATA` | required | The store, `…/eegdash-corpus-v0.zarr`; `download.sh` prints the path. |
+| `CKPT` | required | The directory the run writes to. Run again with the same one, the run continues after its last saved epoch. |
+| `SEED` | `2` | Seeds the weights and the batch order. The paper's two runs used 2 and 3. |
+| `RUN` | `reve-base-v0-seed$SEED` | The run's name: it names the saved states under `$CKPT/states/`. |
+| `REVE_EEG` | `../reve_eeg` | The patched checkout of REVE's code, by default beside this repository. |
+| `GPUS` | all of the machine's | The number of GPUs to use on each machine. |
+| `NNODES` | `1` | The number of machines. |
+| `NODE_RANK` | required when `NNODES` > 1 | The index of the machine the line runs on, 0 on the first. |
+| `MAIN_HOST` | required when `NNODES` > 1 | The name of the first machine; the others connect to it. |
+
+### `train.sh`
+
+```bash
+DATA=<store> RUN=<name> CKPT=<directory> REVE_EEG=<checkout> SEED=<n> bash train.sh
+```
+
+`pretrain.sh` calls `train.sh`, the script that launches REVE's trainer, and passes these settings on; they can be
+set on the `pretrain.sh` line too. Called by itself, `train.sh` needs `DATA`, `RUN`, `CKPT`, `REVE_EEG` and `SEED`,
+and takes `NNODES` (default 1) and `NPROC`, the number of processes over all machines (default 1).
+
+| setting | default | meaning |
+|---|---|---|
+| `EPOCHS` | `17` | The number of epochs; 17 is the paper's. |
+| `ENCODER` | `base` | The model size, one of the encoder configurations of REVE's code: `base` (the paper's), `tiny`, `small` or `large`. |
+| `LR` | `2.4e-4` | The peak learning rate. |
+| `BS` | `300` | REVE's batch-size setting: a batch holds 16 × `BS` ÷ channels samples on each GPU. |
+| `WORKERS` | `8` | Data-loading workers per GPU. |
+| `MIXED_PRECISION` | `fp16` | `fp16` runs on every recent NVIDIA GPU; `bf16` on those that support it (A100, H100). |
+| `EXCLUDE_DATASETS` | none | Dataset ids left out of training, separated by commas (`EXCLUDE_DATASETS=ds004395,nm000338`). |
+| `REVE_ENCODER_EVERY` | `5` | Saves a snapshot of the encoder, `encoder_epoch_<k>.pth`, every so many epochs; `0` turns it off. |
+| `RESUME` | `False` | `True` continues from the last saved state in `$CKPT`. `pretrain.sh` sets it when that state exists. |
+| `ACCELERATE_ARGS` | none | Extra flags for `accelerate launch`. `pretrain.sh` sets them on several machines. |
+
+A run writes under `$CKPT`: `run/encoder.pth` (the pretrained encoder, at the end), `run/encoder_epoch_<k>.pth` (the
+snapshots), `run/loss.csv` (one row per epoch) and `states/$RUN/` (a state per epoch, to continue from).
+
+## 3. What is here
 
 | path | content |
 |---|---|
@@ -82,10 +194,62 @@ converts it for braindecode ([Reproduce the conversion](#reproduce-the-conversio
 | `requirements.txt` | the exact Python environment of every conversion, training and evaluation run |
 | `NOTICE` | the licence of the reve_eeg lines quoted in `patches/` and `tests/test_patches.py` |
 
-## Fetch the raw corpus by name
+## 4. Reading the store
 
-With EEGDash's current `develop` version (the named-corpus API was merged in
-[EEGDash #521](https://github.com/eegdash/EEGDash/pull/521)), the corpus table is included in the package:
+The store is Zarr v3, one group per bucket, named `0` … `631`. The names below are the ones written by
+`scripts/eegdash_to_reve.py` (`ZarrGroupWriter`) and `scripts/merge_parts.py` (the merge and `licence`).
+
+| array | shape | dtype | content |
+|---|---|---|---|
+| `<b>/data` | (N, 2000, C) | float32 | the 10-s training samples, µV, not normalised; one chunk per sample, 128 samples per shard file, Blosc-zstd level 5 |
+| `<b>/session` | (N,) | int32 | the session (row of `stats`, entry of the `sessions` attribute) each sample comes from |
+| `<b>/stats` | (S, 2, C) | float32 | per-session mean and standard deviation per channel, µV |
+| `<b>/positions` | (C, 3) | float32 | electrode positions, metres |
+
+| attributes of | keys |
+|---|---|
+| the root | `format` (`"reve-samples"`), `version`, `sfreq` (200), `window` (2000), `units` (`"uV"`), `band_pass_hz` ([0.5, 99.5]), `datasets`, `n_buckets`, `n_samples`, `buckets` (the bucket index), `licence` (`"other"`), `licences` (dataset → licence), `licence_file` (`"LICENSES.csv"`) |
+| a bucket | `dataset`, `channels` (names, sorted), `sessions` (per session: source `file`, `duration` in samples at 200 Hz, `n_samples`, `first_sample`), `bucket`, `source_shard`, `licence`, `licence_url`, `source` |
+
+```python
+import numpy as np
+import zarr  # zarr >= 3
+
+root = zarr.open("eegdash-corpus-v0.zarr", mode="r")
+b = root["0"]
+print(b.attrs["dataset"], b.attrs["licence"], b.attrs["channels"][:4])
+x = b["data"][0]                              # (2000, C) float32, µV: one 10-s sample
+mean, sd = b["stats"][int(b["session"][0])]   # its session's per-channel mean and SD
+z = np.clip((x - mean) / sd, -15, 15)         # REVE's normalisation, applied at load time
+pos = b["positions"][:]                       # (C, 3), metres
+```
+
+## 5. Patches to reve_eeg
+
+`patches/apply_patches.sh <checkout>` edits a reve_eeg checkout at commit 06a7059 in place. It is idempotent (a second
+run changes nothing) and stops if an anchor line is missing. It applies patches 1 and 3–10; patch 2 is documented only.
+Patch 8 appends `patches/zarr_loader.py` to `src/utils/data_loading.py` (a newer copy replaces the block, never
+duplicates it).
+
+| patch | file | change |
+|---|---|---|
+| 1 | `src/utils/data_loading.py` | single-session guard in `compute_group_segments`: a bucket holding one session no longer crashes |
+| 2 | `src/train.py` | not applied: continue pretraining from `brain-bzh/reve-base` |
+| 3 | `src/train.py` | per-epoch loss written to `loss.csv` in the run directory |
+| 4 | `src/train.py` | multi-GPU: the type check that rejected Accelerate's `DistributedDataParallel` wrapper is dropped |
+| 5 | `src/utils/ddp_setup.py` | Weights & Biases online unless `wandb.offline`, with the configured entity |
+| 6 | `src/train.py` | Weights & Biases logging every 100 iterations, with a fractional epoch and the learning rate |
+| 7 | `src/train.py` | encoder snapshot `encoder_epoch_<k>.pth` every `REVE_ENCODER_EVERY` epochs (default 5) |
+| 8 | `src/utils/data_loading.py` | a `data.path` ending in `.zarr` is read from the store (`ZarrEEGDataset`); `REVE_EXCLUDE_DATASETS` leaves datasets out by id |
+| 9 | `src/train.py` | a resumed run continues at the epoch after its last saved state |
+| 10 | `src/train.py`, `src/utils/data_loading.py` | seeding: the config's `seed` sets the weights and the batch order, and each epoch covers every batch once across ranks |
+
+## 6. Fetch the raw corpus by name
+
+`EEGDashCorpus`, in EEGDash's current `develop` version
+([EEGDash #521](https://github.com/eegdash/EEGDash/pull/521)), fetches the raw recordings the store was converted
+from, out of the archives. It reads its list of datasets from the corpus table, `corpus/eegdash-corpus-v0.csv`.
+In Python the corpus's name is enough, because EEGDash ships a copy of the table:
 
 ```python
 from eegdash import EEGDashCorpus
@@ -97,13 +261,19 @@ for recording in corpus.records():
     raw = recording.raw
 ```
 
-This fetches the archives' raw recordings, not the converted Zarr store. To train on the released
-store, download it from [Hugging Face](https://huggingface.co/datasets/EEGDash/eegdash-corpus-v0)
-(`download.sh`) and follow the [Quick start](#quick-start-pretrain-reve-on-the-corpus) or
-[Reading the store](#reading-the-store). The corpus web page gives the
-[full dataset and paradigm breakdown](https://eegdash.org/corpus/v0.html#paradigms).
+The command line takes the table's path, not the name, so have the file first: clone this repository, or save
+the table from the [corpus page](https://eegdash.org/corpus/v0.html#download).
 
-## Reproduce the conversion
+```bash
+python -m eegdash.corpus download corpus/eegdash-corpus-v0.csv --cache-dir eegdash-cache
+python -m eegdash.corpus verify corpus/eegdash-corpus-v0.csv --cache-dir eegdash-cache --level hash
+```
+
+This fetches the archives' raw recordings, not the converted Zarr store. To train on the released store, follow
+the [Quick start](#1-quick-start-pretrain-reve-on-the-corpus); to read it, [Reading the store](#4-reading-the-store).
+The corpus page gives the [full dataset and paradigm breakdown](https://eegdash.org/corpus/v0.html#paradigms).
+
+## 7. Reproduce the conversion
 
 The steps below document how the released store was built. They are not needed to read it.
 
@@ -177,7 +347,7 @@ A downloaded copy of the store is checked against the released list with
 **5. Train and score.** Clone reve_eeg at the commit the patches target, patch it, and launch `train.sh` (its header
 lists every setting; the paper's two runs used `SEED=2` and `SEED=3`, 17 epochs, learning rate 2.4e-4, batch 300).
 `pretrain.sh` is the short form of the same launch: it fills in the run name, the GPU count and the resume flag and
-calls `train.sh` (the [Quick start](#quick-start-pretrain-reve-on-the-corpus)).
+calls `train.sh` (the [Quick start](#1-quick-start-pretrain-reve-on-the-corpus)).
 
 ```bash
 git clone https://github.com/elouayas/reve_eeg.git $REVE_EEG && git -C $REVE_EEG checkout 06a7059
@@ -199,57 +369,7 @@ python scripts/run_openeegbench.py run --label reve-base-v0-run2-epfinal \
 python scripts/run_openeegbench.py summarize $OUTROOT/evals/openeegbench
 ```
 
-## Reading the store
-
-The store is Zarr v3, one group per bucket, named `0` … `631`. The names below are the ones written by
-`scripts/eegdash_to_reve.py` (`ZarrGroupWriter`) and `scripts/merge_parts.py` (the merge and `licence`).
-
-| array | shape | dtype | content |
-|---|---|---|---|
-| `<b>/data` | (N, 2000, C) | float32 | the 10-s training samples, µV, not normalised; one chunk per sample, 128 samples per shard file, Blosc-zstd level 5 |
-| `<b>/session` | (N,) | int32 | the session (row of `stats`, entry of the `sessions` attribute) each sample comes from |
-| `<b>/stats` | (S, 2, C) | float32 | per-session mean and standard deviation per channel, µV |
-| `<b>/positions` | (C, 3) | float32 | electrode positions, metres |
-
-| attributes of | keys |
-|---|---|
-| the root | `format` (`"reve-samples"`), `version`, `sfreq` (200), `window` (2000), `units` (`"uV"`), `band_pass_hz` ([0.5, 99.5]), `datasets`, `n_buckets`, `n_samples`, `buckets` (the bucket index), `licence` (`"other"`), `licences` (dataset → licence), `licence_file` (`"LICENSES.csv"`) |
-| a bucket | `dataset`, `channels` (names, sorted), `sessions` (per session: source `file`, `duration` in samples at 200 Hz, `n_samples`, `first_sample`), `bucket`, `source_shard`, `licence`, `licence_url`, `source` |
-
-```python
-import numpy as np
-import zarr  # zarr >= 3
-
-root = zarr.open("eegdash-corpus-v0.zarr", mode="r")
-b = root["0"]
-print(b.attrs["dataset"], b.attrs["licence"], b.attrs["channels"][:4])
-x = b["data"][0]                              # (2000, C) float32, µV: one 10-s sample
-mean, sd = b["stats"][int(b["session"][0])]   # its session's per-channel mean and SD
-z = np.clip((x - mean) / sd, -15, 15)         # REVE's normalisation, applied at load time
-pos = b["positions"][:]                       # (C, 3), metres
-```
-
-## Patches to reve_eeg
-
-`patches/apply_patches.sh <checkout>` edits a reve_eeg checkout at commit 06a7059 in place. It is idempotent (a second
-run changes nothing) and stops if an anchor line is missing. It applies patches 1 and 3–10; patch 2 is documented only.
-Patch 8 appends `patches/zarr_loader.py` to `src/utils/data_loading.py` (a newer copy replaces the block, never
-duplicates it).
-
-| patch | file | change |
-|---|---|---|
-| 1 | `src/utils/data_loading.py` | single-session guard in `compute_group_segments`: a bucket holding one session no longer crashes |
-| 2 | `src/train.py` | not applied: continue pretraining from `brain-bzh/reve-base` |
-| 3 | `src/train.py` | per-epoch loss written to `loss.csv` in the run directory |
-| 4 | `src/train.py` | multi-GPU: the type check that rejected Accelerate's `DistributedDataParallel` wrapper is dropped |
-| 5 | `src/utils/ddp_setup.py` | Weights & Biases online unless `wandb.offline`, with the configured entity |
-| 6 | `src/train.py` | Weights & Biases logging every 100 iterations, with a fractional epoch and the learning rate |
-| 7 | `src/train.py` | encoder snapshot `encoder_epoch_<k>.pth` every `REVE_ENCODER_EVERY` epochs (default 5) |
-| 8 | `src/utils/data_loading.py` | a `data.path` ending in `.zarr` is read from the store (`ZarrEEGDataset`); `REVE_EXCLUDE_DATASETS` leaves datasets out by id |
-| 9 | `src/train.py` | a resumed run continues at the epoch after its last saved state |
-| 10 | `src/train.py`, `src/utils/data_loading.py` | seeding: the config's `seed` sets the weights and the batch order, and each epoch covers every batch once across ranks |
-
-## Environment
+## 8. Environment
 
 Two files. `requirements-pretraining.txt` is the short list that pretraining on the store needs
 (15 packages, the same versions); the download runs apart from it, with the newest `huggingface_hub` and `hf_xet`
@@ -270,14 +390,14 @@ reve_eeg at 06a7059, patched or not, with its training dependencies (accelerate,
 transformers); they look for it at `$REVE_EEG`, then `~/GitHub/reve_eeg` and `~/Documents/GitHub/reve_eeg`, and skip
 when none is found.
 
-## Licences
+## 9. Licences
 
 The code is under the BSD 3-Clause License (`LICENSE`). The lines of reve_eeg quoted in `patches/` and
 `tests/test_patches.py` remain under reve_eeg's MIT licence (`NOTICE`). The EEG data is not in this repository: each
 dataset keeps its own licence, listed in `corpus/LICENSES.csv` (52 CC0-1.0, 12 CC-BY-SA-4.0, 11 CC-BY-4.0, 1
 CC-BY-NC-4.0, 1 GPL-3.0), and the Hugging Face gate asks users to accept them before downloading.
 
-## Citation
+## 10. Citation
 
 Cite the corpus and every dataset whose buckets you use (`CITATION.bib`, keyed by dataset id).
 
